@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import { Typography } from "ant-design-vue";
+import { Typography,TypographyLink } from "ant-design-vue";
 </script>
 
 <template>
     <div class ="root">
         <header>
-            <Typography.Title :level=1>Don't Chat More</Typography.Title>
+            <Typography.Title :level=1>问仓 - Ai 开发工具集</Typography.Title>
             <div class="wrapper">
                 <nav>
-                    <RouterLink to="/">Main</RouterLink>
-                    <RouterLink to="/about">About</RouterLink>
+                    <RouterLink to="/"><TypographyLink>Prompt矩阵</TypographyLink></RouterLink>
+                    <RouterLink to="/clients"><TypographyLink>Api和Client</TypographyLink></RouterLink>
+                    <RouterLink to="/about"><TypographyLink>关于</TypographyLink></RouterLink>
                 </nav>
             </div>
         </header>
@@ -30,24 +31,14 @@ header {
     max-height: 100vh;
 }
 
-.logo {
-    display: block;
-    margin: 0 auto 2rem;
-}
+
 
 nav {
     width: 100%;
-    font-size: 12px;
     text-align: right;
 }
 
-nav a.router-link-exact-active {
-    color: var(--color-text);
-}
 
-nav a.router-link-exact-active:hover {
-    background-color: transparent;
-}
 
 nav a {
     display: inline-block;

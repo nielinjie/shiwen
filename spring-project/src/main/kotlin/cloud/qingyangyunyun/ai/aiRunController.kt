@@ -18,10 +18,7 @@ class AiRunController(@Autowired val service: Service) {
         )
     }
 
-    @GetMapping("/api/clients")
-    fun run(): List<String> {
-        return service.getClients()
-    }
+
 }
 
 data class RunRequest(

@@ -32,8 +32,9 @@ dependencies {
 	implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
 	// Replace the following with the starter dependencies of specific modules you wish to use
 	implementation("org.springframework.ai:spring-ai-openai")
-	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
-	implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
+	implementation("org.springframework.ai:spring-ai-ollama")
+//	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
+//	implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

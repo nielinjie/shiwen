@@ -7,8 +7,9 @@ import java.io.File
 
 @Component
 class WorkshopService() {
-    val savePath = File("./workshop.json")
-
+    val workshopBasePath = File("./workshop")
+    val savePath = File(workshopBasePath, "./state.json")
+    val configPath = File(workshopBasePath, "./clients.json")
     fun save(workspace: Workspace) {
         val json = Json.encodeToString(workspace)
         savePath.writeText(json)

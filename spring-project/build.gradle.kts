@@ -47,3 +47,13 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
+task("copyFiles", type = Copy::class) {
+	from("../vue-project/dist")
+	into("src/main/resources/static")
+}
+task("yarnBuild", type = Exec::class) {
+	workingDir("../vue-project")
+	commandLine("yarn", "build")
+}

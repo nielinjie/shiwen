@@ -3,41 +3,38 @@ import { storeToRefs } from "pinia";
 import { useRunPromptStore } from "../stores/runPrompt";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { Button, Select, SelectOption } from "ant-design-vue";
-import { ref, watch } from "vue";
-import { useRunnerStore } from "@/stores/runnerStore";
-import { replaceAt } from "@/util";
+import { computed, ref, watch } from "vue";
+import { useClientStore } from "@/stores/clientStore";
 const rpStore = useRunPromptStore();
 const workspaceStore = useWorkspaceStore();
-const props = defineProps(["index"]);
-const { tasks } = storeToRefs(workspaceStore);
-const { runners } = storeToRefs(useRunnerStore());
+const props = defineProps<{index:number,x:number,y:number}>();
+const { cells } = storeToRefs(workspaceStore);
+const { clients } = storeToRefs(useClientStore());
+const tasks = computed(() => {
+    return (cells.value
+        .find((cell) => {
+            return cell.x === props.x && cell.y === props.y;
+        })
+        ?.tasks ) ?? [];
+});
 function removeMe() {
     tasks.value.splice(props.index, 1);
 }
-const runner = ref(tasks.value[props.index].runner);
 
-watch(runner, () => {
-    tasks.value = replaceAt(tasks.value, props.index,(task) =>({
-        ...task,
-        runner: runner.value,
-    }));
-});
-watch(tasks,()=>{
-    runner.value = tasks.value[props.index].runner;
-})
+
 </script>
 
 <template>
     <div class="variable">
-        <Select v-model:value="runner">
+        <Select v-model:value="tasks[props.index].client">
             <SelectOption
-                v-for="runner in runners"
-                :key="runner"
-                :value="runner"
-                >{{ runner }}</SelectOption
+                v-for="client in clients"
+                :key="client"
+                :value="client"
+                >{{ client }}</SelectOption
             >
         </Select>
-        <Button @click="rpStore.runIt(index, runner)">
+        <Button @click="rpStore.runIt(index, tasks[props.index].client)">
             <span>Run</span>
         </Button>
         <Button @click="removeMe">-</Button>
@@ -50,6 +47,10 @@ watch(tasks,()=>{
     padding: 10px;
     background-color: bisque;
     height: 100%;
+}
+.variable textarea {
+    font-family: Arial, sans-serif; /* Replace with your desired font */
+    font-size: 16px; /* Replace with your desired font size */
 }
 textarea {
     width: 100%;

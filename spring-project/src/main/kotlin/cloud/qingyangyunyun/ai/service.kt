@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component
 @Component
 class Service(@Autowired val ollamaClient: OllamaChatClient, @Autowired val openAiClient: OpenAiChatClient) {
 
-    val runners: Map<String, ChatClient> = mapOf("qwen" to ollamaClient, "openai" to openAiClient)
+    val clientMap: Map<String, ChatClient> = mapOf("qwen" to ollamaClient, "openai" to openAiClient)
 
-    fun call(prompt: String, variables: Map<String, String>, runner: String): String {
+    fun call(prompt: String, variables: Map<String, String>, client: String): String {
         val promptTemplate = PromptTemplate(prompt, variables)
-        return runners[runner]?.let {
+        return clientMap[client]?.let {
             it.call(promptTemplate.create()).result.output.content
-        } ?: "no runner found - $runner"
+        } ?: "no client found - $client"
     }
 
-    fun getRunners(): List<String> {
-        return runners.keys.toList()
+    fun getClients(): List<String> {
+        return clientMap.keys.toList()
     }
 }
 

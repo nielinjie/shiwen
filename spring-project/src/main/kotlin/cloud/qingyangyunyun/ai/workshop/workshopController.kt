@@ -23,12 +23,14 @@ class WorkspaceController {
 
 @Serializable
 data class Workspace(
-    val variable: String, val prompt: String, val tasks: List<Task>
+    val variables: List<String>, val prompts: List<String>, val cells: List<WorkCell>
 
 )
 
 @Serializable
 data class Task(
     val result: String,
-    val runner:String
+    val client:String
 )
+@Serializable
+data class WorkCell(val x:Int,val y:Int,val tasks: List<Task>)

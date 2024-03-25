@@ -38,3 +38,9 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### front end ###
+/src/main/resources/static/
+
+### workshop ###
+workshop.json

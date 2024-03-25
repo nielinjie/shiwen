@@ -11,26 +11,34 @@ data class Workspace(
  */
 
 export interface Task {
-    runner:string,result:string
+    client: string;
+    result: string;
+}
+export interface WorkCell{
+    x: number;
+    y: number;
+    tasks: Task[];
 }
 
 export const useWorkspaceStore = defineStore("workspace", () => {
-    const prompt = ref("prompt");
-    const variable = ref("variable");
-    const tasks:Ref<Task[]> = ref([]);
+    const prompts :Ref<string[]>= ref(["prompt"]);
+    const variables :Ref<string[]>= ref(["variable"]);
+    const cells: Ref<WorkCell[]> = ref([{x:0,y:0,tasks:[]}]);
     function save() {
         mande("/api/workspace").post({
-            prompt: prompt.value,
-            variable: variable.value,
-            tasks: tasks.value,
+            prompts: prompts.value,
+            variables: variables.value,
+            cells: cells.value,
         });
     }
-    function load(){
-        mande("/api/workspace").get().then((re) => {
-            prompt.value = (re as any).prompt;
-            variable.value = (re as any).variable;
-            tasks.value = (re as any).tasks;
-        })
+    function load() {
+        mande("/api/workspace")
+            .get()
+            .then((re) => {
+                prompts.value = (re as any).prompts;
+                variables.value = (re as any).variables;
+                cells.value = (re as any).cells;
+            });
     }
-    return { prompt, variable, tasks ,save,load};
+    return { prompts, variables, cells, save, load };
 });

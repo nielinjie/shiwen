@@ -18,7 +18,7 @@ class WorkshopService() {
         val json = try {
             savePath.readText()
         } catch (e: Exception) {
-            return Workspace("", "", emptyList())
+            return Workspace(emptyList(), emptyList(), emptyList())
         }
 
         return Json.decodeFromString(Workspace.serializer(), json)

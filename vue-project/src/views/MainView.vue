@@ -7,7 +7,7 @@ import { Row, Col } from "ant-design-vue";
 </script>
 
 <template>
-    <Row>
+    <Row style="height: 200px">
         <Col :span="6">
             <div>
                 <WorkshopArea></WorkshopArea>
@@ -27,7 +27,7 @@ import { Row, Col } from "ant-design-vue";
         </Col>
         <Col :span="10">
             <div class="area">
-                <RunningArea></RunningArea>
+                <RunningArea :x="0" :y="0"></RunningArea>
             </div>
         </Col>
     </Row>

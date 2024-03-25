@@ -5,27 +5,25 @@ import { useWorkspaceStore, type Task } from "./workspaceStore";
 import { replaceAt } from "@/util";
 const runApi = mande("/api/run");
 
-
-
 export const useRunPromptStore = defineStore("runPrompt", () => {
-    const { prompt, variable, tasks } = storeToRefs(useWorkspaceStore());
-    async function runIt(runningIndex: number, runner: string) {
+    const { prompts, variables, cells } = storeToRefs(useWorkspaceStore());
+    function setResult(x: number, y: number, index: number, result: string) {
+        const tasks = cells.value.find((c) => c.x === x && c.y === y)?.tasks;
+        if (tasks) {
+            tasks[index].result = result;
+        }
+    }
+
+    async function runIt(runningIndex: number, client: string) {
         const request = {
-            input: variable.value,
-            prompt: prompt.value,
-            runner: runner,
+            input: variables.value[0],
+            prompt: prompts.value[0],
+            client: client,
         };
 
-        tasks.value = replaceAt(tasks.value, runningIndex, (task: Task) => ({
-            ...task,
-            result: "running...",
-        }));
+        setResult(0, 0, runningIndex, "running...");
         runApi.post(request).then((re) => {
-            tasks.value = replaceAt(
-                tasks.value,
-                runningIndex,
-                (task:Task) => re as Task
-            );
+            setResult(0, 0, runningIndex, (re as Task).result);
         });
     }
 

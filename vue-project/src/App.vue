@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import { Typography } from "ant-design-vue";
 </script>
 
 <template>
     <div class ="root">
         <header>
-            <h1>Don't Chat More</h1>
+            <Typography.Title :level=1>Don't Chat More</Typography.Title>
             <div class="wrapper">
                 <nav>
                     <RouterLink to="/">Main</RouterLink>

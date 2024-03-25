@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useWorkspaceStore } from '@/stores/workspaceStore';
+import { storeToRefs } from "pinia";
+import { useWorkspaceStore } from "@/stores/workspaceStore";
+import { TypographyParagraph } from "ant-design-vue";
 
-const { prompt } = storeToRefs(useWorkspaceStore());
+const { prompts } = storeToRefs(useWorkspaceStore());
 </script>
 <template>
     <div class="variable">
-        <textarea v-model="prompt"></textarea>
+        <textarea v-model="prompts[0]"></textarea>
     </div>
 </template>
 
@@ -15,6 +16,10 @@ const { prompt } = storeToRefs(useWorkspaceStore());
     padding: 10px;
     background-color: bisque;
     height: 100%;
+}
+.variable textarea {
+    font-family: Arial, sans-serif; /* Replace with your desired font */
+    font-size: 16px; /* Replace with your desired font size */
 }
 textarea {
     width: 100%;

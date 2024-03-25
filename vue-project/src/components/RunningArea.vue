@@ -1,34 +1,47 @@
 <script setup lang="ts">
-import { useWorkspaceStore } from "@/stores/workspaceStore";
+import { useWorkspaceStore, type WorkCell } from "@/stores/workspaceStore";
 import { useRunPromptStore } from "../stores/runPrompt";
 import { Button, Space, Row, Col } from "ant-design-vue";
 import { storeToRefs } from "pinia";
-import { useRunnerStore } from "@/stores/runnerStore";
+import { useClientStore } from "@/stores/clientStore";
+import { computed } from "vue";
 
 const rpStore = useRunPromptStore();
-const { tasks } = storeToRefs(useWorkspaceStore());
-const {runners} = storeToRefs(useRunnerStore())
+const { cells } = storeToRefs(useWorkspaceStore());
+const { clients } = storeToRefs(useClientStore());
+const props = defineProps<{ x: number; y: number }>();
 function addTask() {
-    tasks.value.push({
-        result: "",
-        runner: runners.value[0]
-    });
+    cells.value
+        .find((cell: WorkCell) => {
+            return cell.x === props.x && cell.y === props.y;
+        })
+        ?.tasks?.push({
+            result: "",
+            client: clients.value[0],
+        });
 }
+const tasks = computed(() => {
+    return (
+        cells.value.find((cell: WorkCell) => {
+            return cell.x === props.x && cell.y === props.y;
+        })?.tasks ?? []
+    );
+});
 </script>
 <template>
-        <Row>
+    <Row class="main">
+        <Col v-for="(task, index) in tasks">
+            <RunningItem :index="index" :x="x" :y="y"></RunningItem>
+        </Col>
+        <Col>
             <Button @click="addTask">
                 <span>Add</span>
             </Button>
-        </Row>
-        <Row class="main">
-            <Col v-for="(task, index) in tasks" :span="12">
-                <RunningItem :index="index"></RunningItem>
-            </Col>
-        </Row>
+        </Col>
+    </Row>
 </template>
 <style scoped>
 .main {
-    height: 100%;
+    height: 400px;
 }
 </style>

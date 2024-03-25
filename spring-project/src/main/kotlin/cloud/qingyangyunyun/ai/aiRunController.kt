@@ -13,25 +13,25 @@ class AiRunController(@Autowired val service: Service) {
     fun run(@RequestBody runRequest: RunRequest): RunResponse {
         return RunResponse(
             service.call(
-                runRequest.prompt, mapOf("input" to runRequest.input), runRequest.runner
-            ), runRequest.runner
+                runRequest.prompt, mapOf("input" to runRequest.input), runRequest.client
+            ), runRequest.client
         )
     }
 
-    @GetMapping("/api/runners")
+    @GetMapping("/api/clients")
     fun run(): List<String> {
-        return service.getRunners()
+        return service.getClients()
     }
 }
 
 data class RunRequest(
-    val runner: String,
+    val client: String,
     val input: String,
     val prompt: String
 )
 
 data class RunResponse(
     val result: String,
-    val runner:String
+    val client:String
 )
 

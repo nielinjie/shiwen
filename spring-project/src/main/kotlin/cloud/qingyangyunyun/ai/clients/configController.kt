@@ -34,6 +34,11 @@ class ClientConfigController(@Autowired val clientsService: ClientsService) {
             throw IllegalArgumentException(e)
         }
     }
+
+    @GetMapping("/api/configs/example")
+    fun exampleConfigs(): ClientConfigs {
+        return clientsService.exampleConfigs
+    }
 }
 
 @Serializable

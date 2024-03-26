@@ -17,5 +17,15 @@ export const useClientStore = defineStore("client", () => {
     function saveConfigs() {
         mande("/api/configs").post({ string: configs.value });
     }
-    return { clients, configs, saveConfigs };
+    function loadConfigs(){
+        mande("/api/configs")
+            .get()
+            .then(re => configs.value = JSON.stringify( re,null,2));
+    }
+    function loadExample(){
+        mande("/api/configs/example")
+            .get()
+            .then(re => configs.value = JSON.stringify( re,null,2));
+    }
+    return { clients, configs, saveConfigs ,loadConfigs,loadExample};
 });

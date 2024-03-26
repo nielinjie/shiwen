@@ -5,7 +5,7 @@ import { TypographyTitle, Button, Flex } from "ant-design-vue";
 
 <template>
         <Flex vertical>
-            <TypographyTitle :level="1">问苍 - Ai 开发工具集</TypographyTitle>
+            <TypographyTitle :level="1">试问 - LLM 应用开发工具集</TypographyTitle>
             <div class="wrapper">
                 <Flex justify="flex-end" gap="middle">
                     <RouterLink to="/"

@@ -21,32 +21,33 @@ class ClientsService(@Autowired val workshopService: WorkshopService) {
     val apis = mutableMapOf<String, Any>()
     private var configs: ClientConfigs? = null
 
-
+    val exampleConfigs = ClientConfigs(
+        listOf(
+            ApiConfig(
+                "openai",
+                "openai",
+                "https://api.xxx.io/",
+                "sk-xxxxxxxxxx"
+            ),
+            ApiConfig("ollama", "ollama", "http://localhost:11434", null)
+        ),
+        listOf(
+            ClientConfig(
+                "openai", "openai", mapOf(
+                    "model" to "gpt-3.5-turbo",
+                    "temperature" to "0.7"
+                )
+            ),
+            ClientConfig(
+                "qwen", "ollama", mapOf(
+                    "model" to "qwen:14b",
+                    "temperature" to "0.7"
+                )
+            )
+        )
+    )
     private val defaultConfigs = ClientConfigs(
         emptyList(), emptyList()
-//        listOf(
-//            ApiConfig(
-//                "openai",
-//                "openai",
-//                "https://api.xxx.io/",
-//                "sk-xxx"
-//            ),
-//            ApiConfig("ollama", "ollama", "http://localhost:11434", null)
-//        ),
-//        listOf(
-//            ClientConfig(
-//                "openai", "openai", mapOf(
-//                    "model" to "gpt-3.5-turbo",
-//                    "temperature" to "0.7"
-//                )
-//            ),
-//            ClientConfig(
-//                "qwen", "ollama", mapOf(
-//                    "model" to "qwen:14b",
-//                    "temperature" to "0.7"
-//                )
-//            )
-//        )
     )
 
     init {
@@ -56,7 +57,6 @@ class ClientsService(@Autowired val workshopService: WorkshopService) {
             configs!!
         )
     }
-
 
     fun load(): ClientConfigs {
         val path = workshopService.configPath

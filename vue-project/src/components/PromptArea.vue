@@ -1,22 +1,32 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
-import { TypographyTitle, Row } from "ant-design-vue";
+import { TypographyTitle, Row, Flex, Button } from "ant-design-vue";
 
 const { prompts } = storeToRefs(useWorkspaceStore());
 const props = defineProps<{ promptIndex: number }>();
+const workspaceStore = useWorkspaceStore();
+
 </script>
 <template>
-    <Row>
-        <TypographyTitle :level="4">
-            <span>Prompt:</span>
-        </TypographyTitle>
-    </Row>
-    <Row>
+    <Flex :vertical="true" gap="middle">
+        <Flex align="end" gap="large">
+            <TypographyTitle :level="5">
+                {{ props.promptIndex === 0 ? "Prompts:" : "&nbsp;" }}
+            </TypographyTitle>
+            <Button
+                v-if="props.promptIndex === 0"
+                @click="workspaceStore.addPrompt"
+            >
+                +</Button
+            >
+            <Button  @click="workspaceStore.removePrompt(promptIndex)"> -</Button>
+        </Flex>
+
         <div class="variable">
             <textarea v-model="prompts[props.promptIndex]"></textarea>
         </div>
-    </Row>
+    </Flex>
 </template>
 
 <style scoped>
@@ -33,5 +43,4 @@ const props = defineProps<{ promptIndex: number }>();
     border-color: darkcyan;
     height: 20vh;
 }
-
 </style>

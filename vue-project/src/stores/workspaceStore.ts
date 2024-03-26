@@ -14,16 +14,16 @@ export interface Task {
     client: string;
     result: string;
 }
-export interface WorkCell{
+export interface WorkCell {
     x: number;
     y: number;
     tasks: Task[];
 }
 
 export const useWorkspaceStore = defineStore("workspace", () => {
-    const prompts :Ref<string[]>= ref(["prompt"]);
-    const variables :Ref<string[]>= ref(["variable"]);
-    const cells: Ref<WorkCell[]> = ref([{x:0,y:0,tasks:[]}]);
+    const prompts: Ref<string[]> = ref(["prompt"]);
+    const variables: Ref<string[]> = ref(["variable"]);
+    const cells: Ref<WorkCell[]> = ref([{ x: 0, y: 0, tasks: [] }]);
     function save() {
         mande("/api/workspace").post({
             prompts: prompts.value,
@@ -42,15 +42,49 @@ export const useWorkspaceStore = defineStore("workspace", () => {
     }
     function addPrompt() {
         prompts.value.push("prompt");
-        variables.value.forEach((variable,index) => {
-            cells.value.push({y:index,x:prompts.value.length-1,tasks:[]});
-        })
+        variables.value.forEach((variable, index) => {
+            cells.value.push({
+                y: index,
+                x: prompts.value.length - 1,
+                tasks: [],
+            });
+        });
     }
-    function addVariable(){
+    function removePrompt(index: number) {
+        prompts.value.splice(index, 1);
+        cells.value = cells.value.filter((cell) => cell.x !== index);
+        replaceCellAfterX(index);
+    }
+    function replaceCellAfterX(xIndex:number){
+        cells.value.filter(cell => cell.x > xIndex).forEach(cell => cell.x = cell.x - 1);
+    }
+    function addVariable() {
         variables.value.push("variable");
-        prompts.value.forEach((prompt,index) => {
-            cells.value.push({y:variables.value.length-1,x:index,tasks:[]});
-        })
+        prompts.value.forEach((prompt, index) => {
+            cells.value.push({
+                y: variables.value.length - 1,
+                x: index,
+                tasks: [],
+            });
+        });
     }
-    return { prompts, variables, cells, save, load ,addPrompt,addVariable};
+    function removeVariable(index: number) {
+        variables.value.splice(index, 1);
+        cells.value = cells.value.filter((cell) => cell.y !== index);
+        replaceCellAfterY(index);
+    }
+    function replaceCellAfterY(yIndex:number){
+        cells.value.filter(cell => cell.y > yIndex).forEach(cell => cell.y = cell.y - 1);
+    }
+    return {
+        prompts,
+        variables,
+        cells,
+        save,
+        load,
+        addPrompt,
+        removePrompt,
+        addVariable,
+        removeVariable,
+    };
 });

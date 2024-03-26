@@ -2,23 +2,30 @@
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { useRunPromptStore } from "../stores/runPrompt";
 import { storeToRefs } from "pinia";
-import { TypographyTitle, Row } from "ant-design-vue";
+import { TypographyTitle, Row, Flex ,Button} from "ant-design-vue";
 
 const { variables } = storeToRefs(useWorkspaceStore());
 const props = defineProps<{ variableIndex: number }>();
+const workspaceStore = useWorkspaceStore();
 </script>
 
 <template>
-    <Row>
-        <TypographyTitle :level="4">
-            <span>Variables:</span>
-        </TypographyTitle>
-    </Row>
-    <Row>
+    <Flex :vertical="true" gap="middle">
+        <Flex align="end" gap="large">
+            <TypographyTitle :level="5">
+                {{ props.variableIndex === 0 ? "Variables:" : "&nbsp;" }}
+            </TypographyTitle>
+<Button
+                v-if="props.variableIndex === 0"
+                @click="workspaceStore.addVariable"
+            >
+                +</Button
+            >
+            <Button  @click="workspaceStore.removeVariable(variableIndex)"> -</Button>        </Flex>
         <div class="variable">
             <textarea v-model="variables[props.variableIndex]"></textarea>
         </div>
-    </Row>
+    </Flex>
 </template>
 
 <style scoped>

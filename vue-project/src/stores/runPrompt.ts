@@ -14,16 +14,16 @@ export const useRunPromptStore = defineStore("runPrompt", () => {
         }
     }
 
-    async function runIt(runningIndex: number, client: string) {
+    async function runIt(pIndex:number,vIndex:number,runningIndex: number, client: string) {
         const request = {
-            input: variables.value[0],
-            prompt: prompts.value[0],
+            input: variables.value[vIndex],
+            prompt: prompts.value[pIndex],
             client: client,
         };
 
-        setResult(0, 0, runningIndex, "running...");
+        setResult(pIndex, vIndex, runningIndex, "running...");
         runApi.post(request).then((re) => {
-            setResult(0, 0, runningIndex, (re as Task).result);
+            setResult(pIndex, vIndex, runningIndex, (re as Task).result);
         });
     }
 

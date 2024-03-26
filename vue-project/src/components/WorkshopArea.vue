@@ -8,5 +8,7 @@ const workspaceStore = useWorkspaceStore();
     <Space>
         <Button @click="workspaceStore.save">Save</Button>
         <Button @click="workspaceStore.load">Load</Button>
+        <Button @click="workspaceStore.addPrompt">AddPrompt</Button>
+        <Button @click="workspaceStore.addVariable">AddVariable</Button>
     </Space>
 </template>

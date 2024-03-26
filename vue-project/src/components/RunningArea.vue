@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWorkspaceStore, type WorkCell } from "@/stores/workspaceStore";
 import { useRunPromptStore } from "../stores/runPrompt";
-import { Button, Space, Row, Col } from "ant-design-vue";
+import { Button, Space, Row, Col, TypographyTitle } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useClientStore } from "@/stores/clientStore";
 import { computed } from "vue";
@@ -11,6 +11,7 @@ const { cells } = storeToRefs(useWorkspaceStore());
 const { clients } = storeToRefs(useClientStore());
 const props = defineProps<{ x: number; y: number }>();
 function addTask() {
+    
     cells.value
         .find((cell: WorkCell) => {
             return cell.x === props.x && cell.y === props.y;
@@ -29,19 +30,21 @@ const tasks = computed(() => {
 });
 </script>
 <template>
-    <Row class="main">
-        <Col v-for="(task, index) in tasks">
-            <RunningItem :index="index" :x="x" :y="y"></RunningItem>
-        </Col>
+    <Row>
         <Col>
+            <TypographyTitle :level="4">
+                Calling:
+            </TypographyTitle>
+        </Col>
+        <Col :offset="12" :span="12">
             <Button @click="addTask">
-                <span>Add</span>
+                Add
             </Button>
         </Col>
     </Row>
+    <Row>
+        <Col v-for="(task, index) in tasks">
+            <RunningItem :index="index" :x="x" :y="y"></RunningItem>
+        </Col>
+    </Row>
 </template>
-<style scoped>
-.main {
-    height: 400px;
-}
-</style>

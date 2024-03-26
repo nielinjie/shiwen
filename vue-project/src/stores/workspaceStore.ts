@@ -40,5 +40,17 @@ export const useWorkspaceStore = defineStore("workspace", () => {
                 cells.value = (re as any).cells;
             });
     }
-    return { prompts, variables, cells, save, load };
+    function addPrompt() {
+        prompts.value.push("prompt");
+        variables.value.forEach((variable,index) => {
+            cells.value.push({y:index,x:prompts.value.length-1,tasks:[]});
+        })
+    }
+    function addVariable(){
+        variables.value.push("variable");
+        prompts.value.forEach((prompt,index) => {
+            cells.value.push({y:variables.value.length-1,x:index,tasks:[]});
+        })
+    }
+    return { prompts, variables, cells, save, load ,addPrompt,addVariable};
 });

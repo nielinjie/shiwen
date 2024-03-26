@@ -2,28 +2,36 @@
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { useRunPromptStore } from "../stores/runPrompt";
 import { storeToRefs } from "pinia";
+import { TypographyTitle, Row } from "ant-design-vue";
 
 const { variables } = storeToRefs(useWorkspaceStore());
+const props = defineProps<{ variableIndex: number }>();
 </script>
 
 <template>
-    <div class="variable">
-        <textarea v-model="variables[0]"></textarea>
-    </div>
+    <Row>
+        <TypographyTitle :level="4">
+            <span>Variables:</span>
+        </TypographyTitle>
+    </Row>
+    <Row>
+        <div class="variable">
+            <textarea v-model="variables[props.variableIndex]"></textarea>
+        </div>
+    </Row>
 </template>
 
 <style scoped>
 .variable {
-    padding: 10px;
+    padding: 1em;
     background-color: bisque;
-    height: 100%;
+    /* height: 100%; */
 }
 .variable textarea {
-    font-family: Arial, sans-serif; /* Replace with your desired font */
-    font-size: 16px; /* Replace with your desired font size */
-}
-textarea {
-    width: 100%;
-    height: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 1em;
+    border-color: darkcyan;
 }
 </style>

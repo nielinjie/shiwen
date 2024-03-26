@@ -2,7 +2,8 @@
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { useRunPromptStore } from "../stores/runPrompt";
 import { storeToRefs } from "pinia";
-import { TypographyTitle, Row, Flex ,Button} from "ant-design-vue";
+import { TypographyText, Row, Flex, Button } from "ant-design-vue";
+import { PlusOutlined, MinusOutlined } from "@ant-design/icons-vue";
 
 const { variables } = storeToRefs(useWorkspaceStore());
 const props = defineProps<{ variableIndex: number }>();
@@ -11,17 +12,28 @@ const workspaceStore = useWorkspaceStore();
 
 <template>
     <Flex :vertical="true" gap="middle">
-        <Flex align="end" gap="large">
-            <TypographyTitle :level="5">
+        <Flex align="flex-end" gap="large" justify="flex-end">
+            <TypographyText strong>
                 {{ props.variableIndex === 0 ? "Variables:" : "&nbsp;" }}
-            </TypographyTitle>
-<Button
-                v-if="props.variableIndex === 0"
-                @click="workspaceStore.addVariable"
-            >
-                +</Button
-            >
-            <Button  @click="workspaceStore.removeVariable(variableIndex)"> -</Button>        </Flex>
+            </TypographyText>
+            <Flex :gap="2">
+                <Button
+                    size="small"
+                    shape="circle"
+                    @click="workspaceStore.removeVariable(variableIndex)"
+                >
+                    <MinusOutlined
+                /></Button>
+                <Button
+                    size="small"
+                    shape="circle"
+                    v-if="props.variableIndex === 0"
+                    @click="workspaceStore.addVariable"
+                >
+                    <PlusOutlined
+                /></Button>
+            </Flex>
+        </Flex>
         <div class="variable">
             <textarea v-model="variables[props.variableIndex]"></textarea>
         </div>
@@ -30,15 +42,14 @@ const workspaceStore = useWorkspaceStore();
 
 <style scoped>
 .variable {
-    padding: 1em;
-    background-color: bisque;
-    /* height: 100%; */
+    padding: 2px;
 }
 .variable textarea {
     font-family: Arial, sans-serif;
     font-size: 16px;
     border-radius: 5px;
-    padding: 1em;
-    border-color: darkcyan;
+    padding: 0.5em;
+    border-color: rgba(179, 223, 247, 0.25);
+    height: 15vh;
 }
 </style>

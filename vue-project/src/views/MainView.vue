@@ -23,7 +23,11 @@ const workspaceStore = useWorkspaceStore();
                 </div>
             </td>
         </tr>
-        <tr v-for="(v, vIndex) in workspaceStore.variables" :key="vIndex">
+        <tr
+            v-for="(v, vIndex) in workspaceStore.variables"
+            :key="vIndex"
+            :class="vIndex % 2 === 0 ? 'highlight' : ''"
+        >
             <td>
                 <div class="area">
                     <VariableArea :variableIndex="vIndex"></VariableArea>
@@ -43,13 +47,13 @@ const workspaceStore = useWorkspaceStore();
 
 <style scoped>
 div {
-    padding: 10px;
+    padding: 2px;
 }
-.area {
-    height: 100%;
+.highlight {
+    /* background-color: rgba(179, 223, 247, 0.25); */
 }
-
-.body {
-    height: 300px;
+td {
+    border-right: solid 1px rgba(179, 223, 247, 01);
+    border-bottom: solid 1px rgba(179, 223, 247, 01);
 }
 </style>

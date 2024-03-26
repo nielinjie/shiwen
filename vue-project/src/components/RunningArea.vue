@@ -5,6 +5,7 @@ import { Button, Space, Row, Col, TypographyTitle, Flex } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useClientStore } from "@/stores/clientStore";
 import { computed } from "vue";
+import {PlusOutlined} from "@ant-design/icons-vue";
 
 const rpStore = useRunPromptStore();
 const { cells } = storeToRefs(useWorkspaceStore());
@@ -31,10 +32,10 @@ const tasks = computed(() => {
 <template>
     <Flex :vertical="true" gap="middle">
         <Flex gap="large" align="end">
-            <TypographyTitle :level="5">
-                {{ x === 0 && y === 0 ? "Calling:" : "&nbsp;" }}
-            </TypographyTitle>
-            <Button @click="addTask"> + </Button>
+            <Button 
+            size="small"
+                shape="circle"
+            @click="addTask" v-if="tasks.length===0"> <PlusOutlined/> </Button>
         </Flex>
         <Flex gap="small">
             <div v-for="(task, index) in tasks">

@@ -13,9 +13,14 @@ import { TypographyTitle, Button, Flex } from "ant-design-vue";
                             >Prompt矩阵</Button
                         ></RouterLink
                     >
+                    <RouterLink to="/prompLib"
+                        ><Button type="link" size="large"
+                            >Prompt收藏</Button
+                        ></RouterLink
+                    >
                     <RouterLink to="/clients"
                         ><Button type="link" size="large"
-                            >Api和Client</Button
+                            >配置Api和模型客户端</Button
                         ></RouterLink
                     >
                     <RouterLink to="/about"
@@ -26,7 +31,7 @@ import { TypographyTitle, Button, Flex } from "ant-design-vue";
                 </Flex>
             </div>
         </Flex>
-    <RouterView />
+    <RouterView class="content"/>
 </template>
 
 <style scoped>
@@ -37,7 +42,9 @@ header {
     line-height: 1.5;
     max-height: 100vh;
 }
-
+.content{
+    margin-top: 2em;
+}
 /* @media (min-width: 1024px) {
     header {
         display: flex;

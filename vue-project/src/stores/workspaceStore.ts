@@ -21,8 +21,8 @@ export interface WorkCell {
 }
 
 export const useWorkspaceStore = defineStore("workspace", () => {
-    const prompts: Ref<string[]> = ref(["prompt"]);
-    const variables: Ref<string[]> = ref(["variable"]);
+    const prompts: Ref<string[]> = ref([""]);
+    const variables: Ref<string[]> = ref([""]);
     const cells: Ref<WorkCell[]> = ref([{ x: 0, y: 0, tasks: [] }]);
     function save() {
         mande("/api/workspace").post({

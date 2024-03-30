@@ -1,55 +1,68 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
-import { TypographyText, Row, Flex, Button } from "ant-design-vue";
+import { TypographyText, Row, Flex, Button, Textarea } from "ant-design-vue";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons-vue";
+import { ref } from "vue";
 
 const { prompts } = storeToRefs(useWorkspaceStore());
 const props = defineProps<{ promptIndex: number }>();
 const workspaceStore = useWorkspaceStore();
+const hover = ref(false);
 </script>
 <template>
-    <Flex :vertical="true" gap="middle">
-        <Flex align="flex-end" gap="large" justify="flex-end">
-            <TypographyText strong>
-                {{ props.promptIndex === 0 ? "Prompts:" : "&nbsp;" }}
-            </TypographyText>
-            <Flex :gap="2">
-                <Button
-                    size="small"
-                    shape="circle"
-                    @click="workspaceStore.removePrompt(promptIndex)"
-                >
-                    <MinusOutlined
-                /></Button>
-                <Button
-                    size="small"
-                    shape="circle"
-                    v-if="props.promptIndex === 0"
-                    @click="workspaceStore.addPrompt"
-                >
-                    <PlusOutlined
-                /></Button>
+    <div @mouseover="hover = true" @mouseout="hover = false" >
+        <Flex :vertical="true" gap="middle" class="content">
+            <Flex align="flex-end" gap="large" justify="flex-end">
+                <TypographyText strong>
+                    {{ props.promptIndex === 0 ? "Prompts:" : "&nbsp;" }}
+                </TypographyText>
+                <div v-visibility="hover">
+                    <Flex :gap="2">
+                        <Button
+                            size="small"
+                            shape="circle"
+                            @click="workspaceStore.removePrompt(promptIndex)"
+                        >
+                            <MinusOutlined
+                        /></Button>
+                        <Button
+                            size="small"
+                            shape="circle"
+                            v-if="props.promptIndex === prompts.length - 1"
+                            @click="workspaceStore.addPrompt"
+                        >
+                            <PlusOutlined
+                        /></Button>
+                    </Flex>
+                </div>
             </Flex>
-        </Flex>
 
-        <div class="variable">
-            <textarea v-model="prompts[props.promptIndex]"></textarea>
-        </div>
-    </Flex>
+            <div class="variable">
+                <Textarea
+                    v-model:value="prompts[props.promptIndex]"
+                    allowClear
+                    :autoSize = "{minRows: 3, maxRows: 10}"
+                    placeholder="Enter prompt here..."
+                ></Textarea>
+            </div>
+        </Flex>
+    </div>
 </template>
 
 <style scoped>
-.variable {
-    padding: 2px;
-    /* height: 100%; */
+.content{
+    min-width: 10vw;
 }
-.variable textarea {
+    /* padding: 2px; */
+    /* height: 100%; */
+
+/* .variable textarea {
     font-family: Arial, sans-serif;
     font-size: 16px;
     border-radius: 5px;
     padding: 0.5em;
     border-color: rgba(179, 223, 247, 0.25);
     height: 15vh;
-}
+} */
 </style>

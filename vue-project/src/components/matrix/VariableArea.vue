@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWorkspaceStore } from "@/stores/workspaceStore";
-import { useRunPromptStore } from "../stores/runPrompt";
+import { useRunPromptStore } from "@/stores/runPrompt";
 import { storeToRefs } from "pinia";
 import { TypographyText, Row, Flex, Button, Textarea } from "ant-design-vue";
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons-vue";

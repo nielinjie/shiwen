@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useWorkspaceStore, type WorkCell } from "@/stores/workspaceStore";
-import { useRunPromptStore } from "../stores/runPrompt";
-import { Button, Space, Row, Col, TypographyTitle, Flex } from "ant-design-vue";
+import { Button, Flex } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useClientStore } from "@/stores/clientStore";
 import { computed } from "vue";
 import {PlusOutlined} from "@ant-design/icons-vue";
 
-const rpStore = useRunPromptStore();
 const { cells } = storeToRefs(useWorkspaceStore());
 const { clients } = storeToRefs(useClientStore());
 const props = defineProps<{ x: number; y: number }>();

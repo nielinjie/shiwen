@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 import MainView from "../views/MainView.vue";
 
 const router = createRouter({
@@ -16,9 +16,14 @@ const router = createRouter({
             component: () => import("../views/ClientsView.vue"),
         },
         {
-          path: "/prompLib",
-          name: "promptLib",
-          component: () => import("../views/PromptLibView.vue"),
+            path: "/prompLib",
+            name: "promptLib",
+            component: () => import("../views/PromptLibView.vue"),
+        },
+        {
+            path: "/docs",
+            name: "docs",
+            component: () => import("../views/DocsView.vue"),
         },
         {
             path: "/about",
@@ -28,4 +33,4 @@ const router = createRouter({
     ],
 });
 
-export default router
+export default router;

@@ -17,12 +17,16 @@ import { TypographyTitle, Button, Flex } from "ant-design-vue";
                         ><Button type="link" size="large"
                             >Prompt收藏</Button
                         ></RouterLink
-                    >
+                    ><RouterLink to="/docs"
+                        ><Button type="link" size="large"
+                            >文档知识</Button
+                        ></RouterLink>   
                     <RouterLink to="/clients"
                         ><Button type="link" size="large"
                             >配置Api和模型客户端</Button
                         ></RouterLink
                     >
+                    
                     <RouterLink to="/about"
                         ><Button type="link" size="large"
                             >关于</Button
@@ -45,30 +49,5 @@ header {
 .content{
     margin-top: 2em;
 }
-/* @media (min-width: 1024px) {
-    header {
-        display: flex;
-        place-items: center;
-        padding-right: calc(var(--section-gap) / 2);
-    }
 
-    .logo {
-        margin: 0 2rem 0 0;
-    }
-
-    header .wrapper {
-        display: flex;
-        place-items: flex-start;
-        flex-wrap: wrap;
-    }
-
-    nav {
-        text-align: left;
-        margin-left: -1rem;
-        font-size: 1rem;
-
-        padding: 1rem 0;
-        margin-top: 1rem;
-    }
-} */
 </style>

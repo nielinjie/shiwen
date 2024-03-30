@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import VariableArea from "../components/VariableArea.vue";
-import PromptArea from "../components/PromptArea.vue";
-import RunningArea from "../components/RunningArea.vue";
+import VariableArea from "@/components/matrix/VariableArea.vue";
+import PromptArea from "@/components/matrix/PromptArea.vue";
+import RunningArea from "@/components/matrix/RunningArea.vue";
 import WorkshopArea from "@/components/WorkshopArea.vue";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 

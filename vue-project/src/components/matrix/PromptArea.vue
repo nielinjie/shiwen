@@ -11,8 +11,8 @@ const workspaceStore = useWorkspaceStore();
 const hover = ref(false);
 </script>
 <template>
-    <div @mouseover="hover = true" @mouseout="hover = false" >
-        <Flex :vertical="true" gap="middle" class="content">
+    <div @mouseover="hover = true" @mouseout="hover = false">
+        <Flex vertical gap="middle" class="content">
             <Flex align="flex-end" gap="large" justify="flex-end">
                 <TypographyText strong>
                     {{ props.promptIndex === 0 ? "Prompts:" : "&nbsp;" }}
@@ -42,7 +42,7 @@ const hover = ref(false);
                 <Textarea
                     v-model:value="prompts[props.promptIndex]"
                     allowClear
-                    :autoSize = "{minRows: 3, maxRows: 10}"
+                    :autoSize="{ minRows: 3, maxRows: 10 }"
                     placeholder="Enter prompt here..."
                 ></Textarea>
             </div>
@@ -51,11 +51,11 @@ const hover = ref(false);
 </template>
 
 <style scoped>
-.content{
+.content {
     min-width: 10vw;
 }
-    /* padding: 2px; */
-    /* height: 100%; */
+/* padding: 2px; */
+/* height: 100%; */
 
 /* .variable textarea {
     font-family: Arial, sans-serif;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useRunPromptStore } from "../stores/runPrompt";
+import { useRunPromptStore } from "@/stores/runPrompt";
 import { useWorkspaceStore, type WorkCell } from "@/stores/workspaceStore";
 import { Button, Select, SelectOption, Flex, Textarea } from "ant-design-vue";
 import { computed, ref } from "vue";

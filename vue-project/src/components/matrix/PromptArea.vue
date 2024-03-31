@@ -2,13 +2,18 @@
 import { storeToRefs } from "pinia";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { TypographyText, Row, Flex, Button, Textarea } from "ant-design-vue";
-import { PlusOutlined, MinusOutlined } from "@ant-design/icons-vue";
+import { PlusOutlined, MinusOutlined, SaveOutlined } from "@ant-design/icons-vue";
 import { ref } from "vue";
+import { usePromptLibStore } from "@/stores/promptLibStore";
 
 const { prompts } = storeToRefs(useWorkspaceStore());
+const promptLib = usePromptLibStore();
 const props = defineProps<{ promptIndex: number }>();
 const workspaceStore = useWorkspaceStore();
 const hover = ref(false);
+function head10(content:string):string{
+    return content.length>10?content.slice(0,10):content;
+}
 </script>
 <template>
     <div @mouseover="hover = true" @mouseout="hover = false">
@@ -19,6 +24,11 @@ const hover = ref(false);
                 </TypographyText>
                 <div v-visibility="hover">
                     <Flex :gap="2">
+                        <Button
+                            size="small"
+                            shape="circle"
+                            @click="promptLib.savePrompt(prompts[props.promptIndex],head10(prompts[props.promptIndex]),'local-storage')"
+                        ><SaveOutlined/></Button>
                         <Button
                             size="small"
                             shape="circle"

@@ -20,6 +20,13 @@ repositories {
 	mavenCentral()
 	maven("https://repo.spring.io/milestone")
 	maven("https://repo.spring.io/snapshot")
+	maven("https://packages.aliyun.com/maven/repository/2331954-snapshot-Z6hK35/"){
+		credentials {
+			username = project.findProperty("aliMUser") as String? ?: System.getenv("ALIMUSER")
+			password = project.findProperty("aliMPass") as String? ?: System.getenv("ALIMPASS")
+		}
+	}
+
 }
 
 dependencies {
@@ -28,6 +35,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+	implementation("xyz.nietongxue:common:1.0-SNAPSHOT")
 
 	implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
 	// Replace the following with the starter dependencies of specific modules you wish to use

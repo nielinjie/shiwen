@@ -1,21 +1,22 @@
 package cloud.qingyangyunyun.ai.workshop
 
 import kotlinx.serialization.Serializable
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class WorkspaceController {
+class WorkspaceController(@Autowired val workshopService: WorkshopService) {
     @PostMapping("/api/workspace")
     fun save(@RequestBody workspace: Workspace) {
-        WorkshopService().save(workspace)
+        workshopService.save(workspace)
     }
 
     @GetMapping("/api/workspace")
     fun load(): Workspace {
-        return WorkshopService().load()
+        return workshopService.load()
     }
 
 

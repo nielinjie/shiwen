@@ -1,10 +1,7 @@
-package cloud.qingyangyunyun.ai
+package cloud.qingyangyunyun.ai.matrix
 
 import cloud.qingyangyunyun.ai.clients.ClientsService
-import org.springframework.ai.chat.ChatClient
 import org.springframework.ai.chat.prompt.PromptTemplate
-import org.springframework.ai.ollama.OllamaChatClient
-import org.springframework.ai.openai.OpenAiChatClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

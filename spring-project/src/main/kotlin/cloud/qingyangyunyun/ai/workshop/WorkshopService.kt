@@ -1,27 +1,18 @@
 package cloud.qingyangyunyun.ai.workshop
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import cloud.qingyangyunyun.ai.JsonData
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.io.File
+
 
 @Component
-class WorkshopService() {
-    val workshopBasePath = File("./workshop")
-    val savePath = File(workshopBasePath, "./state.json")
-    val configPath = File(workshopBasePath, "./clients.json")
+class WorkshopService(@Autowired val paths: Paths) {
+    val stateData = JsonData(paths.statePath)
     fun save(workspace: Workspace) {
-        val json = Json.encodeToString(workspace)
-        savePath.writeText(json)
+        stateData.save(workspace)
     }
 
     fun load(): Workspace {
-        val json = try {
-            savePath.readText()
-        } catch (e: Exception) {
-            return Workspace(emptyList(), emptyList(), emptyList())
-        }
-
-        return Json.decodeFromString(Workspace.serializer(), json)
+        return stateData.load(Workspace(listOf(), listOf(), listOf()))
     }
 }

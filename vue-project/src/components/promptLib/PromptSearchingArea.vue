@@ -1,9 +1,26 @@
 <script setup lang="ts">
-import { Flex ,Input} from "ant-design-vue";
+import { Flex, Input } from "ant-design-vue";
+import { ref } from "vue";
+import { usePromptLibStore } from "@/stores/promptLibStore";
+import { storeToRefs } from "pinia";
+const inputting = ref("");
+const promptStore = usePromptLibStore();
+const { query } = storeToRefs(promptStore);
+function search() {
+    query.value = inputting.value;
+    promptStore.searchPrompt();
+}
 </script>
 <template>
     <Flex justify="space-around">
-        <Input size="large" class="input" allowClear placeholder="Search Prompts ..."/>
+        <Input
+            v-model:value="inputting"
+            size="large"
+            class="input"
+            allowClear
+            placeholder="Search Prompts ..."
+            @keydown.enter="search"
+        />
     </Flex>
 </template>
 <style scoped>

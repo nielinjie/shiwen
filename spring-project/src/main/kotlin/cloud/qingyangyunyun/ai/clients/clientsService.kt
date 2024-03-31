@@ -1,5 +1,7 @@
 package cloud.qingyangyunyun.ai.clients
 
+import cloud.qingyangyunyun.ai.JsonData
+import cloud.qingyangyunyun.ai.workshop.Paths
 import cloud.qingyangyunyun.ai.workshop.WorkshopService
 import cloud.qingyangyunyun.ai.workshop.Workspace
 import kotlinx.serialization.encodeToString
@@ -16,9 +18,10 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class ClientsService(@Autowired val workshopService: WorkshopService) {
+class ClientsService(@Autowired val workshopService: WorkshopService, @Autowired val paths: Paths) {
     val clients = mutableMapOf<String, ChatClient>()
     val apis = mutableMapOf<String, Any>()
+    val configData = JsonData(paths.configPath)
     private var configs: ClientConfigs? = null
 
     val exampleConfigs = ClientConfigs(
@@ -59,19 +62,11 @@ class ClientsService(@Autowired val workshopService: WorkshopService) {
     }
 
     fun load(): ClientConfigs {
-        val path = workshopService.configPath
-        val json = try {
-            path.readText()
-        } catch (e: Exception) {
-            return defaultConfigs
-        }
-        return Json.decodeFromString(ClientConfigs.serializer(), json)
+        return configData.load(defaultConfigs)
     }
 
     fun save() {
-        val path = workshopService.configPath
-        val json = Json.encodeToString(configs!!)
-        path.writeText(json)
+        configData.save(configs!!)
     }
 
     fun getClients(): List<String> {

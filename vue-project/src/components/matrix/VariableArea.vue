@@ -34,7 +34,7 @@ const hover = ref(false);
                             size="small"
                             shape="circle"
                             v-if="props.variableIndex === variables.length - 1"
-                            @click="workspaceStore.addVariable"
+                            @click="workspaceStore.addVariable()"
                         >
                             <PlusOutlined
                         /></Button>

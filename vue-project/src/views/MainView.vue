@@ -10,7 +10,7 @@ const workspaceStore = useWorkspaceStore();
 
 <template>
     <div class="content">
-        <table>
+        <table style="min-width: 90vw;">
             <tr>
                 <td>
                     <div>

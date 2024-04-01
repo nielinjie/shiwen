@@ -40,8 +40,8 @@ export const useWorkspaceStore = defineStore("workspace", () => {
                 cells.value = (re as any).cells;
             });
     }
-    function addPrompt() {
-        prompts.value.push("prompt");
+    function addPrompt(text:string="") {
+        prompts.value.push(text);
         variables.value.forEach((variable, index) => {
             cells.value.push({
                 y: index,
@@ -59,7 +59,7 @@ export const useWorkspaceStore = defineStore("workspace", () => {
         cells.value.filter(cell => cell.x > xIndex).forEach(cell => cell.x = cell.x - 1);
     }
     function addVariable() {
-        variables.value.push("variable");
+        variables.value.push("");
         prompts.value.forEach((prompt, index) => {
             cells.value.push({
                 y: variables.value.length - 1,

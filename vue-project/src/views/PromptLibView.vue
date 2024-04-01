@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Flex } from "ant-design-vue";
-import PromptSearchingArea from "../components/promptLib/PromptSearchingArea.vue";
-import PromptSeedArea from "../components/promptLib/PromptSeedArea.vue";
-import PromptListArea from "../components/promptLib/PromptListArea.vue";
-import  { usePromptLibStore } from "@/stores/promptLibStore";
-import lib from "@ant-design/icons-vue";
-const libStore = usePromptLibStore();   
+import PromptSearchingArea from "@/components/promptLib/PromptSearchingArea.vue";
+import PromptSeedArea from "@/components/promptLib/PromptSeedArea.vue";
+import PromptListArea from "@/components/promptLib/PromptListArea.vue";
+import { usePromptLibStore } from "@/stores/promptLibStore";
+const libStore = usePromptLibStore();
 libStore.searchPrompt();
 libStore.loadSources();
 </script>
@@ -24,4 +23,3 @@ libStore.loadSources();
     margin-right: 2em;
 }
 </style>
-

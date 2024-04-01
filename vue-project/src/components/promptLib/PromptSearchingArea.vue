@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 const inputting = ref("");
 const promptStore = usePromptLibStore();
 const { query } = storeToRefs(promptStore);
+inputting.value = query.value
 function search() {
     query.value = inputting.value;
     promptStore.searchPrompt();

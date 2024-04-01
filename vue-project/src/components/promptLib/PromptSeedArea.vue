@@ -12,7 +12,7 @@ const { storages, seeds } = storeToRefs(sourceStore);
 </script>
 <template>
     <Flex vertical gap="middle" class="seeds">
-        <TypographyTitle :level="5">Prompt Seeds: </TypographyTitle>
+        <TypographyTitle :level="5">Prompt Source: </TypographyTitle>
         <List size="large" bordered :dataSource="storages">
             <template #renderItem="{ item, index }">
                 <SeedListItem

@@ -5,24 +5,24 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class SeedController(
-    @Autowired val seedService: SeedService
+    @Autowired val sourceService: SourceService
 ) {
 
 
     @GetMapping("/api/sources")
     fun seeds(): List<SourceInfo> {
-        return seedService.getSeeds().map { it.info() }
+        return sourceService.getSources().map { it.info() }
     }
 
     @GetMapping("/api/prompts")
     fun search(@RequestParam q: String): List<Prompt> {
 
-        return seedService.search(q)
+        return sourceService.search(q)
     }
 
     @PostMapping("/api/prompts")
     fun savePrompt( @RequestBody prompt: PromptRequest) {
-        seedService.savePrompt(prompt)
+        sourceService.savePrompt(prompt)
     }
 
 }

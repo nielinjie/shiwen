@@ -9,4 +9,5 @@ class Paths {
     val statePath = File(workshopBasePath, "./state.json")
     val configPath = File(workshopBasePath, "./clients.json")
     val localPrompts = File(workshopBasePath, "./prompts.json")
+    val promptsChat = File(workshopBasePath, "./seeds/prompts-chat.json")
 }

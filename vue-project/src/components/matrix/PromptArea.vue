@@ -40,7 +40,7 @@ function head10(content:string):string{
                             size="small"
                             shape="circle"
                             v-if="props.promptIndex === prompts.length - 1"
-                            @click="workspaceStore.addPrompt"
+                            @click="workspaceStore.addPrompt()"
                         >
                             <PlusOutlined
                         /></Button>

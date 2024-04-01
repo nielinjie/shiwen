@@ -15,21 +15,26 @@ data class PromptRequest(
 )
 
 @Component
-class SeedService(@Autowired val paths: Paths, @Autowired val localStorageSeed: LocalStorageSource) {
-    private val seeds = mutableMapOf<String, Source>()
+class SourceService(
+    @Autowired val paths: Paths,
+    @Autowired val localStorageSeed: LocalStorageSource,
+    @Autowired val promptsChatSeed: PromptsChatSeed
+) {
+    private val sources = mutableMapOf<String, Source>()
 
     init {
-        seeds["local-storage"] = localStorageSeed
+        sources["local-storage"] = localStorageSeed
+        sources["https://prompts.chat"] = promptsChatSeed
     }
 
 
-    fun search(q: String): List<Prompt> {
-        if(q.isEmpty()){
-            return seeds.values.flatMap {
+    fun search(q: String): List<Prompt> { //TODO change to embedding+vector searching
+        if (q.isEmpty()) {
+            return sources.values.flatMap {
                 it.prompts()
             }
         }
-        return seeds.values.flatMap {
+        return sources.values.flatMap {
             it.prompts().filter {
                 it.title.contains(q)
                         || it.content.contains(q)
@@ -38,8 +43,8 @@ class SeedService(@Autowired val paths: Paths, @Autowired val localStorageSeed: 
     }
 
 
-    fun getSeeds(): List<Source> {
-        return seeds.values.toList()
+    fun getSources(): List<Source> {
+        return sources.values.toList()
     }
 
     fun savePrompt(prompt: PromptRequest) {

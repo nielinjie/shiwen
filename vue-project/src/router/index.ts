@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MainView from "../views/MainView.vue";
+import MainView from "@/views/MainView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,22 +13,22 @@ const router = createRouter({
         {
             path: "/clients",
             name: "clients",
-            component: () => import("../views/ClientsView.vue"),
+            component: () => import("@/views/ClientsView.vue"),
         },
         {
             path: "/prompLib",
             name: "promptLib",
-            component: () => import("../views/PromptLibView.vue"),
+            component: () => import("@/views/PromptLibView.vue"),
         },
         {
             path: "/docs",
             name: "docs",
-            component: () => import("../views/DocsView.vue"),
+            component: () => import("@/views/DocsView.vue"),
         },
         {
             path: "/about",
             name: "about",
-            component: () => import("../views/AboutView.vue"),
+            component: () => import("@/views/AboutView.vue"),
         },
     ],
 });

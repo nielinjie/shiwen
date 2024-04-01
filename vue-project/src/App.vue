@@ -19,7 +19,7 @@ import { TypographyTitle, Button, Flex } from "ant-design-vue";
                         ></RouterLink
                     ><RouterLink to="/docs"
                         ><Button type="link" size="large"
-                            >文档知识</Button
+                            >文档知识管理</Button
                         ></RouterLink>   
                     <RouterLink to="/clients"
                         ><Button type="link" size="large"

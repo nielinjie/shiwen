@@ -21,9 +21,9 @@ const router = createRouter({
             component: () => import("@/views/PromptLibView.vue"),
         },
         {
-            path: "/docs",
-            name: "docs",
-            component: () => import("@/views/DocsView.vue"),
+            path: "/docbase",
+            name: "docbase",
+            component: () => import("@/views/DocbaseView.vue"),
         },
         {
             path: "/about",

@@ -9,6 +9,7 @@ libStore.searchPrompt();
 libStore.loadSources();
 </script>
 <template>
+    <div class="r">
     <Flex vertical gap="large" class="content">
         <PromptSearchingArea></PromptSearchingArea>
         <Flex gap="large">
@@ -16,10 +17,12 @@ libStore.loadSources();
             <PromptListArea></PromptListArea>
         </Flex>
     </Flex>
+</div>
 </template>
 <style scoped>
-.content {
+.r {
     margin-left: 2em;
     margin-right: 2em;
+    overflow: auto;
 }
 </style>

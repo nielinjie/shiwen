@@ -7,12 +7,9 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    DocListArea: typeof import('./src/components/docs/DocListArea.vue')['default']
-    IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
-    IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
-    IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
-    IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
-    IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    BaseInfoArea: typeof import('./src/components/docbase/BaseInfoArea.vue')['default']
+    DocDetailArea: typeof import('./src/components/docbase/DocDetailArea.vue')['default']
+    DocListArea: typeof import('./src/components/docbase/DocListArea.vue')['default']
     PromptArea: typeof import('./src/components/matrix/PromptArea.vue')['default']
     PromptListArea: typeof import('./src/components/promptLib/PromptListArea.vue')['default']
     PromptListItem: typeof import('./src/components/promptLib/PromptListItem.vue')['default']
@@ -22,8 +19,8 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     RunningArea: typeof import('./src/components/matrix/RunningArea.vue')['default']
     RunningItem: typeof import('./src/components/matrix/RunningItem.vue')['default']
+    SearchingArea: typeof import('./src/components/docbase/SearchingArea.vue')['default']
     SeedListItem: typeof import('./src/components/promptLib/SeedListItem.vue')['default']
-    V: typeof import('./src/components/promptLib/v.vue')['default']
     VariableArea: typeof import('./src/components/matrix/VariableArea.vue')['default']
     WorkshopArea: typeof import('./src/components/WorkshopArea.vue')['default']
   }

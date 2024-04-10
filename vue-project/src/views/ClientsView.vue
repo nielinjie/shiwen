@@ -16,6 +16,7 @@ function saveConfigs() {
 }
 </script>
 <template>
+    <div class="r">
     <Flex gap="large">
         <JsonEditorVue
             :content="{ text: clientStore.configs }"
@@ -52,4 +53,12 @@ function saveConfigs() {
             </Flex>
         </Flex>
     </Flex>
+</div>
 </template>
+<style scoped>
+.r {
+    margin-left: 2em;
+    margin-right: 2em;
+    overflow: auto;
+}
+</style>

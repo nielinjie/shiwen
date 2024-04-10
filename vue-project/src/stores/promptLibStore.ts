@@ -20,6 +20,13 @@ export interface Prompt {
 
 export const usePromptLibStore = defineStore("promptLib", () => {
     const sources: Ref<SourceAndState[]> = ref([]);
+    const sourcesIdToName = computed(() => {
+        const result: Record<string, string> = {};
+        sources.value.forEach((s) => {
+            result[s.id] = s.name;
+        });
+        return result;
+    })
     const storages = computed(() =>
         sources.value.filter((s) => s.type == "storage")
     );
@@ -35,11 +42,12 @@ export const usePromptLibStore = defineStore("promptLib", () => {
     }
     
     function searchPrompt() {
-        console.log(query.value)
         mande("/api/prompts")
             .get({ query: { q: query.value } })
             .then((re) => {
+                console.log('start set array')
                 prompts.value = re as Prompt[];
+                console.log('end to set array')
             });
     }
     loadSources();
@@ -51,5 +59,15 @@ export const usePromptLibStore = defineStore("promptLib", () => {
                 searchPrompt();
             });
     }
-    return { sources, storages, seeds, prompts,query,savePrompt, searchPrompt,loadSources };
+    return {
+        sources,
+        storages,
+        seeds,
+        sourcesIdToName,
+        prompts,
+        query,
+        savePrompt,
+        searchPrompt,
+        loadSources,
+    };
 });

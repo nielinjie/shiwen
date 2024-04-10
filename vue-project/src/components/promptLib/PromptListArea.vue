@@ -2,25 +2,23 @@
 import { usePromptLibStore, type Prompt } from "@/stores/promptLibStore";
 import { Flex, TypographyTitle, List } from "ant-design-vue";
 import { storeToRefs } from "pinia";
-import { computed, ref, type Ref } from "vue";
-
+import { computed, type Ref } from "vue";
 
 export interface PromptObject {
     id: string;
-    sourceName:String
+    sourceName: String;
     title: string;
     content: string;
 }
 
-const promptLibStore = usePromptLibStore()
-const {prompts,sources} = storeToRefs(promptLibStore);
-const promptObjs:Ref<PromptObject[]> =computed(()=>prompts.value.map((prompt:Prompt)=>(
-    ({
-    sourceName:sources.value.find((source:any)=>source.id===prompt.sourceId)?.name ?? "(Unknown Source)",
-    ...prompt
-}))))
-
-
+const promptLibStore = usePromptLibStore();
+const { prompts, sourcesIdToName } = storeToRefs(promptLibStore);
+const promptObjs: Ref<PromptObject[]> = computed(() =>
+    prompts.value.map((prompt: Prompt) => ({
+        sourceName: sourcesIdToName.value[prompt.sourceId] ?? "Unknown",
+        ...prompt,
+    }))
+);
 </script>
 <template>
     <Flex vertical gap="middle" class="list">

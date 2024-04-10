@@ -1,53 +1,59 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import { TypographyTitle, Button, Flex } from "ant-design-vue";
+import {
+    TypographyText,
+    TypographyTitle,
+    Layout,
+    LayoutContent,
+    LayoutHeader,
+    Menu,
+    MenuItem,
+    LayoutFooter,
+} from "ant-design-vue";
+import { ref } from "vue";
+const selectedMenu = ref<string[]>(["/"]);
 </script>
 
 <template>
-        <Flex vertical>
-            <TypographyTitle :level="1">试问 - LLM 应用开发工具集</TypographyTitle>
-            <div class="wrapper">
-                <Flex justify="flex-end" gap="middle">
-                    <RouterLink to="/"
-                        ><Button type="link" size="large"
-                            >Prompt矩阵</Button
-                        ></RouterLink
-                    >
-                    <RouterLink to="/prompLib"
-                        ><Button type="link" size="large"
-                            >Prompt收藏</Button
-                        ></RouterLink
-                    ><RouterLink to="/docs"
-                        ><Button type="link" size="large"
-                            >文档知识管理</Button
-                        ></RouterLink>   
-                    <RouterLink to="/clients"
-                        ><Button type="link" size="large"
-                            >配置Api和模型客户端</Button
-                        ></RouterLink
-                    >
-                    
-                    <RouterLink to="/about"
-                        ><Button type="link" size="large"
-                            >关于</Button
-                        ></RouterLink
-                    >
-                </Flex>
-            </div>
-        </Flex>
-    <RouterView class="content"/>
+    <Layout>
+        <LayoutHeader>
+            <Menu
+                mode="horizontal"
+                v-model:selectedKeys="selectedMenu"
+                theme="dark"
+                style="float: left"
+            >
+                <MenuItem key="/">
+                    <RouterLink to="/"> Prompt矩阵 </RouterLink>
+                </MenuItem>
+                <MenuItem key="/chat">
+                    <RouterLink to="/chat">对话调校</RouterLink>
+                </MenuItem>
+                <MenuItem key="/prompLib">
+                    <RouterLink to="/prompLib">Prompt收藏</RouterLink></MenuItem
+                >
+                <MenuItem key="/docbase">
+                    <RouterLink to="/docbase"> 文档知识管理</RouterLink>
+                </MenuItem>
+                <MenuItem key="/clients">
+                    <RouterLink to="/clients">配置Api和模型客户端</RouterLink>
+                </MenuItem>
+                <MenuItem key="/about">
+                    <RouterLink to="/about">关于</RouterLink>
+                </MenuItem>
+                
+            </Menu>
+            <TypographyTitle
+                :level="2"
+                style="float: right; color: lightgray; margin-top: 1rem"
+                >试问</TypographyTitle
+            >
+        </LayoutHeader>
+        <LayoutContent style="padding-top: 1em; min-height: 85vh">
+            <RouterView class="content" />
+        </LayoutContent>
+        <LayoutFooter></LayoutFooter>
+    </Layout>
 </template>
 
-<style scoped>
-h1 {
-    text-align: center;
-}
-header {
-    line-height: 1.5;
-    max-height: 100vh;
-}
-.content{
-    margin-top: 2em;
-}
-
-</style>
+<style scoped></style>

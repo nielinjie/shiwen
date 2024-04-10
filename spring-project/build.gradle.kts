@@ -1,4 +1,7 @@
+import org.gradle.internal.impldep.org.h2.store.fs.split.FilePathSplit
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 plugins {
 	id("org.springframework.boot") version "3.2.3"
@@ -30,14 +33,13 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 	implementation("xyz.nietongxue:common-jvm:1.0-SNAPSHOT")
+	implementation("cloud.qingyangyunyun:docbaseK-jvm:1.0-SNAPSHOT")
 	implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
 	// Replace the following with the starter dependencies of specific modules you wish to use
 	implementation("org.springframework.ai:spring-ai-openai")
 	implementation("org.springframework.ai:spring-ai-ollama")
 	implementation("net.sourceforge.htmlunit:htmlunit:2.70.0")
 
-//	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
-//	implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -52,12 +54,17 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-
+fun executeCommand(command: String): String {
+	val process = ProcessBuilder(*command.split(" ").toTypedArray()).start()
+	val reader = BufferedReader(InputStreamReader(process.inputStream))
+	return reader.readText().trim()
+}
 task("copyFiles", type = Copy::class) {
 	from("../vue-project/dist")
 	into("src/main/resources/static")
 }
 task("yarnBuild", type = Exec::class) {
+	val yarn = executeCommand("which yarn")
 	workingDir("../vue-project")
-	commandLine("yarn", "build")
+	commandLine(yarn, "build")
 }

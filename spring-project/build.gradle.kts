@@ -33,6 +33,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("net.sf.supercsv:super-csv:2.4.0")
     implementation("xyz.nietongxue:common-jvm:1.0-SNAPSHOT")
     implementation("cloud.qingyangyunyun:docbaseK-jvm:1.0-SNAPSHOT")
     implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))

@@ -6,16 +6,15 @@ export const useChatStore = defineStore("chat", () => {
     const messageInputting = ref("");
     const socketStore = useSocketStore();
     const history = ref<Message[]>([]);
-    watch(socketStore.socketMessages, (newMessages) => {
-        console.log('sockedMessage changed');
+    watch(
+        socketStore.socketMessages, 
+        (newMessages) => {
         const newM = newMessages.filter(
             (it) =>
                 it.timestamp >
                 (history.value[history.value.length - 1]?.timestamp ?? 0)
         );
-        console.log(newM)
         newM.forEach((it) => {
-            console.log(it)
             history.value.push(it)
         })
         

@@ -1,32 +1,38 @@
 <script setup lang="ts">
 import { Flex, ListItem, TypographyText, Avatar } from "ant-design-vue";
 import { UserOutlined, CustomerServiceOutlined } from "@ant-design/icons-vue";
+import ChatMessage from "./ChatMessage.vue";
 const props = defineProps<{
     message: String;
     sender: String;
 }>();
+const messageType = props.message.includes("|") ? "markdown" : "text";
 </script>
 <template>
     <ListItem :class="props.sender == 'User' ? 'right' : 'left'">
         <Flex gap="middle" v-if="props.sender == 'User'">
-            <TypographyText>{{ props.message }}</TypographyText>
-            <TypographyText strong>
-                {{ props.sender }}
-            </TypographyText>
-            <Avatar size="small">
-                <template #icon>
-                    <UserOutlined />
-                </template>
-            </Avatar>
+            <ChatMessage :message="props.message" :type="messageType" />
+            <Flex class="header" gap="middle">
+                <TypographyText strong>
+                    {{ props.sender }}
+                </TypographyText>
+                <Avatar size="small">
+                    <template #icon>
+                        <UserOutlined />
+                    </template>
+                </Avatar>
+            </Flex>
         </Flex>
         <Flex gap="middle" v-else>
-            <Avatar size="small">
-                <template #icon> <CustomerServiceOutlined /> </template>
-            </Avatar>
-            <TypographyText strong>
-                {{ props.sender }}
-            </TypographyText>
-            <TypographyText>{{ props.message }}</TypographyText>
+            <Flex gap="middle" class="header">
+                <Avatar size="small">
+                    <template #icon> <CustomerServiceOutlined /> </template>
+                </Avatar>
+                <TypographyText strong>
+                    {{ props.sender }}
+                </TypographyText>
+            </Flex>
+            <ChatMessage :message="props.message" :type="messageType" />
         </Flex>
     </ListItem>
 </template>
@@ -36,5 +42,8 @@ const props = defineProps<{
 }
 .left {
     justify-content: start;
+}
+.header {
+    min-width: 75px;
 }
 </style>

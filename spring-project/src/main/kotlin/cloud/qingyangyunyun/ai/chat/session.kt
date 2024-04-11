@@ -5,6 +5,7 @@ import cloud.qingyangyunyun.custom.carInsurance.Query
 import cloud.qingyangyunyun.custom.carInsurance.QueryResult
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -54,11 +55,12 @@ sealed interface State {
 
         fun dumpBy(json: JsonElement): Result<Chatting> {
             return this.runCatching {
-                json.jsonObject.get("carModel")?.also { ensureQuery().carModel = it.toString() }
-                json.jsonObject.get("carOwner")?.also { ensureQuery().carOwner = it.toString() }
-                json.jsonObject.get("insuranceCompany")?.also { ensureQuery().insuranceCompany = it.toString() }
-                json.jsonObject.get("area")?.also { ensureQuery().area = it.toString() }
-                json.jsonObject.get("intent")?.also { intent = Intent.fromString(it.toString()) }
+                json.jsonObject.get("carModel")?.also { ensureQuery().carModel = it.jsonPrimitive.content }
+                json.jsonObject.get("carOwner")?.also { ensureQuery().carOwner = it.jsonPrimitive.content }
+                json.jsonObject.get("insuranceCompany")
+                    ?.also { ensureQuery().insuranceCompany = it.jsonPrimitive.content }
+                json.jsonObject.get("area")?.also { ensureQuery().area = it.jsonPrimitive.content }
+                json.jsonObject.get("intent")?.also { intent = Intent.fromString(it.jsonPrimitive.content) }
                 this
             }
         }

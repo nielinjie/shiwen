@@ -27,8 +27,6 @@ export const useSocketStore = defineStore("socket", () => {
             socketStatus.value = "closed";
         };
         socket.value.onmessage = (e) => {
-            console.log(e)
-            console.log(e.data)
             socketMessages.value.push({
                 content: e.data,
                 direct: "down",

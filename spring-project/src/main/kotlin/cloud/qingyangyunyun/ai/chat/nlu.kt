@@ -32,18 +32,18 @@ class NLU(
     2. area字段的取值为string类型，取值必须是以下之一：成都、省内、成都以外 或 null。
     3. carOwner字段的取值为string类型，取值必须是以下之一：个人、商贸、租赁 或 null。
     4. insuranceCompany字段的取值为string类型，取值必须是以下之一：${data.companies.joinToString("、")} 或 null。
-    5. intent字段的取值为string类型，取值必须是以下之一：费用、公司、承保政策、车型 或 null。
+    5. intent字段的取值为string类型，取值必须是以下之一：费用、公司、承保政策、车型、地区、车主、详细、全部 或 null。
     
     输出中只包含用户提及的字段，不要猜测任何用户未直接提及的字段。不要输出值为null的字段。
 """.trimIndent()
     val examples: String = """1. 输入：新能源网约车的车险的费用如何？
-    输出：{"carModel":"新能源网约车","target":"费用"}
+    输出：{"carModel":"新能源网约车","intent":"费用"}
     
     2. 输入：成都可以保什么车型？
-    输出：{"area":"成都","target":"车型"}
+    输出：{"area":"成都","intent":"车型"}
     
     3. 输入：商贸车主的车险有哪些公司？
-    输出：{"carOwner":"商贸","target":"公司"}
+    输出：{"carOwner":"商贸","intent":"公司"}
     
     4. 输入：我想买平安的车险，租赁的。
     输出：{"insuranceCompany":"平安","carOwner":"租赁"}
@@ -75,10 +75,15 @@ class NLU(
 
     val client = "gpt4"
     fun parse(userInput: String): Understanding {
-        val promptTemplate = PromptTemplate(prompt(userInput))
+        val p = prompt(userInput)
+        //可能的思路是template里面有其它的标记，比如`{{}}
+//        val promptTemplate = PromptTemplate(p)
         return runCatching {
             val result = clientsService.getClient(client)?.let {
-                it.call(promptTemplate.create()).result.output.content
+                it.call(p).also {
+                    println(it)
+                }
+
             } ?: error("no client found - $client")
             Json.parseToJsonElement(result) //TODO retry if not a json.
         }.fold(

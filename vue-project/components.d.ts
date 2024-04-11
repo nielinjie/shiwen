@@ -10,6 +10,7 @@ declare module 'vue' {
     BaseInfoArea: typeof import('./src/components/docbase/BaseInfoArea.vue')['default']
     ChatArea: typeof import('./src/components/chat/ChatArea.vue')['default']
     ChatItem: typeof import('./src/components/chat/ChatItem.vue')['default']
+    ChatMessage: typeof import('./src/components/chat/ChatMessage.vue')['default']
     DocDetailArea: typeof import('./src/components/docbase/DocDetailArea.vue')['default']
     DocListArea: typeof import('./src/components/docbase/DocListArea.vue')['default']
     PromptArea: typeof import('./src/components/matrix/PromptArea.vue')['default']

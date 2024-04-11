@@ -8,8 +8,8 @@ export interface SourceInfo {
     id: string;
     type: string;
 }
-interface SourceAndState extends SourceInfo{
-    checked:boolean;
+interface SourceAndState extends SourceInfo {
+    checked: boolean;
 }
 export interface Prompt {
     content: string;
@@ -26,28 +26,26 @@ export const usePromptLibStore = defineStore("promptLib", () => {
             result[s.id] = s.name;
         });
         return result;
-    })
+    });
     const storages = computed(() =>
         sources.value.filter((s) => s.type == "storage")
     );
     const seeds = computed(() => sources.value.filter((s) => s.type == "seed"));
     const prompts: Ref<Prompt[]> = ref([]);
     const query = ref("");
-    function loadSources(){
-    mande("/api/sources")
-        .get()
-        .then((re) => {
-            sources.value = re as SourceAndState[];
-        });
+    function loadSources() {
+        mande("/api/sources")
+            .get()
+            .then((re) => {
+                sources.value = re as SourceAndState[];
+            });
     }
-    
+
     function searchPrompt() {
         mande("/api/prompts")
             .get({ query: { q: query.value } })
             .then((re) => {
-                console.log('start set array')
                 prompts.value = re as Prompt[];
-                console.log('end to set array')
             });
     }
     loadSources();

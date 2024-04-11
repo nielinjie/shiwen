@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BaseInfoArea: typeof import('./src/components/docbase/BaseInfoArea.vue')['default']
+    ChatArea: typeof import('./src/components/chat/ChatArea.vue')['default']
+    ChatItem: typeof import('./src/components/chat/ChatItem.vue')['default']
     DocDetailArea: typeof import('./src/components/docbase/DocDetailArea.vue')['default']
     DocListArea: typeof import('./src/components/docbase/DocListArea.vue')['default']
     PromptArea: typeof import('./src/components/matrix/PromptArea.vue')['default']

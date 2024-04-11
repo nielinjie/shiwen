@@ -1,0 +1,39 @@
+import { defineStore } from "pinia";
+import { computed, ref, watch } from "vue";
+import { useSocketStore, type Message } from "./socketStore";
+
+export const useChatStore = defineStore("chat", () => {
+    const messageInputting = ref("");
+    const socketStore = useSocketStore();
+    const history = ref<Message[]>([]);
+    watch(socketStore.socketMessages, (newMessages) => {
+        console.log('sockedMessage changed');
+        const newM = newMessages.filter(
+            (it) =>
+                it.timestamp >
+                (history.value[history.value.length - 1]?.timestamp ?? 0)
+        );
+        console.log(newM)
+        newM.forEach((it) => {
+            console.log(it)
+            history.value.push(it)
+        })
+        
+    });
+    function sendMessage() {
+        socketStore.sendMessage({
+            content: messageInputting.value,
+            direct: "up",
+            timestamp: Date.now(),
+        });
+        messageInputting.value = "";
+    }
+    setTimeout(() => {
+        socketStore.openSocket();
+    }, 100);
+    return {
+        messageInputting,
+        sendMessage,
+        history,
+    };
+});

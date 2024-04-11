@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["cloud.qingyangyunyun"])
 class DemoApplication()  {
 }
 

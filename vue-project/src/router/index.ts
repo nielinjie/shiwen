@@ -9,12 +9,12 @@ const router = createRouter({
             name: "home",
             component: MainView,
         },
-
         {
-            path: "/clients",
-            name: "clients",
-            component: () => import("@/views/ClientsView.vue"),
+            path: "/chat",
+            name: "chat",
+            component: () => import("@/views/ChatView.vue"),
         },
+
         {
             path: "/prompLib",
             name: "promptLib",
@@ -24,6 +24,11 @@ const router = createRouter({
             path: "/docbase",
             name: "docbase",
             component: () => import("@/views/DocbaseView.vue"),
+        },
+        {
+            path: "/clients",
+            name: "clients",
+            component: () => import("@/views/ClientsView.vue"),
         },
         {
             path: "/about",

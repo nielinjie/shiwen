@@ -1,5 +1,7 @@
 package cloud.qingyangyunyun.ai.chat
 
+import cloud.qingyangyunyun.ai.log.LogHandler
+import cloud.qingyangyunyun.ai.log.LogStore
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -16,11 +18,17 @@ import org.springframework.web.socket.handler.TextWebSocketHandler
 @EnableWebSocket
 class WebSocketConfig(
     @Autowired
-    val dialog: Dialog
+    val dialog: Dialog,
+    @Autowired
+    val logStore: LogStore
 ) : WebSocketConfigurer {
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(MyHandler(dialog), "/api/ws")
+        registry.addHandler(
+            LogHandler(logStore), "/api/logws"
+        )
+
     }
 }
 

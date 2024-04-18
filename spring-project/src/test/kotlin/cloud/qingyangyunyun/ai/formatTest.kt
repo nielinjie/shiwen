@@ -1,19 +1,16 @@
 package cloud.qingyangyunyun.ai
 
 import cloud.qingyangyunyun.ai.chat.Intent
-import cloud.qingyangyunyun.ai.chat.NLG
+import cloud.qingyangyunyun.ai.chat.displayResult
 import cloud.qingyangyunyun.custom.carInsurance.QueryResultItem
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.extensions.spring.SpringExtension
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasSize
-import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
-class FormatTest{
-    @Autowired
-    var nlg: NLG? = null
-
+class FormatTest(
+) : StringSpec({
     val result = listOf(
         QueryResultItem(
             carModel = "新能源网约车",
@@ -34,22 +31,20 @@ class FormatTest{
             underwritingPolicy = "保险公司A"
         ),
     )
-    @Test
-    fun testFormat(){
+    "short format" {
         val intent = Intent.fromString("公司")
-        val output = nlg?.result(result,intent)
-        output!!.also {
+        val output = displayResult(result, intent)
+        output.also {
             println(it)
-            assertThat(it.lines(),hasSize(1))
+            assertThat(it.lines(), hasSize(1))
         }
     }
-    @Test
-    fun testLongFormat(){
+    "long format" {
         val intent = Intent.fromString("费用")
-        val output = nlg?.result(result,intent)
-        output!!.also {
+        val output = displayResult(result, intent)
+        output.also {
             println(it)
-            assertThat(it.lines(),hasSize(4))
+            assertThat(it.lines(), hasSize(4))
         }
     }
-}
+})

@@ -42,6 +42,8 @@ dependencies {
     implementation("org.springframework.ai:spring-ai-ollama")
     implementation("net.sourceforge.htmlunit:htmlunit:2.70.0")
 
+    testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

@@ -1,6 +1,5 @@
 package cloud.qingyangyunyun.custom.carInsurance
 
-import cloud.qingyangyunyun.ai.chat.Intent
 import org.springframework.stereotype.Component
 import org.supercsv.io.CsvListReader
 import org.supercsv.prefs.CsvPreference
@@ -18,7 +17,8 @@ class Data {
         it.trim()
     }.distinct()
     val dataMatrix = dumpCsv("cloud/qingyangyunyun/custom/carInsurance/policy.csv")
-    fun query(query: Query): QueryResult {
+    fun query(query: Query?): QueryResult {
+        if (query == null) return dataMatrix.map { fromCsv(it) }
         return query.matcher().let {
             dataMatrix.filter { item ->
                 it.match(item)

@@ -6,7 +6,10 @@ const props = defineProps<{
     message: String;
     sender: String;
 }>();
-const messageType = props.message.includes("|") ? "markdown" : "text";
+const messageType =
+    props.message.includes("|") || props.message.includes("\n")
+        ? "markdown"
+        : "text";
 </script>
 <template>
     <ListItem :class="props.sender == 'User' ? 'right' : 'left'">

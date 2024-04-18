@@ -31,12 +31,19 @@ class NotMatcher(val matcher: Matcher) : Matcher {
     }
 }
 
-val noConditionKey = listOf("不限", "不限制", "无要求", "无限制")
+val alwaysKeywords = listOf("不限", "不限制", "无要求", "无限制")
 
-class StringMather(val str: String, val index: Int) : Matcher {
+val synonyms = listOf(setOf("除成都外的四川地区", "成都以外"))
+fun synonym(word: String): Set<String> {
+    return synonyms.find {
+        it.contains(word)
+    }?.minus(word) ?: emptySet()
+}
+
+class ContentMatcher(val str: String, val index: Int) : Matcher {
     override fun match(line: List<String>): Boolean {
         return line[index].trim().let {
-            it == (str) || it in noConditionKey || (it.contains(str) && it.contains("或"))
+            it == (str) || it in synonym(str) || it in alwaysKeywords || (it.contains(str) && it.contains("或"))
         }
     }
 }
@@ -44,17 +51,17 @@ class StringMather(val str: String, val index: Int) : Matcher {
 fun Query.matcher(): Matcher {
     val matchers = mutableListOf<Matcher>()
     if (carModel != null) {
-        matchers.add(StringMather(carModel!!, 0))
+        matchers.add(ContentMatcher(carModel!!, 0))
     }
     if (area != null) {
-        matchers.add(StringMather(area!!, 1))
+        matchers.add(ContentMatcher(area!!, 1))
     }
     if (insuranceCompany != null) {
-        matchers.add(StringMather(insuranceCompany!!, 2))
+        matchers.add(ContentMatcher(insuranceCompany!!, 2))
     }
 
     if (carOwner != null) {
-        matchers.add(StringMather(carOwner!!, 3))
+        matchers.add(ContentMatcher(carOwner!!, 3))
     }
     return if (matchers.isEmpty()) {
         tureMatcher()

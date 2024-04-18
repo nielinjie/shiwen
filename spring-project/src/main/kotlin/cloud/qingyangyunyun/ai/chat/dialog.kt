@@ -6,12 +6,8 @@ import org.springframework.stereotype.Component
 
 
 typealias Input = String
-typealias Output = Request?
+typealias Output = Replay?
 
-sealed class CommException(message: String) : Exception(message) {
-    class NoQueryException : CommException("No query found")
-    class CannotUnderstandException(val input: String) : CommException("Cannot understand the input")
-}
 
 fun <T, U> Result<T>.flatmap(f: (T) -> Result<U>): Result<U> {
     return when {
@@ -27,10 +23,10 @@ class Dialog(
     @Autowired val nlg: NLG
 ) {
     fun run(input: String): String {
-        val request: Request = nlu.parse(input).let {
+        val replay: Replay = nlu.parse(input).let {
             session.input(it)
         }
-        return nlg.output(request, input = input, session = session)
+        return nlg.output(replay, input = input, session = session)
 
     }
 }

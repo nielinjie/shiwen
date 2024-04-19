@@ -21,7 +21,10 @@ export const useChatStore = defineStore("chat", () => {
     });
     function sendMessage() {
         socketStore.sendMessage({
-            content: messageInputting.value,
+            content: {
+                body:messageInputting.value,
+                type:"text"
+            },
             direct: "up",
             timestamp: Date.now(),
         });

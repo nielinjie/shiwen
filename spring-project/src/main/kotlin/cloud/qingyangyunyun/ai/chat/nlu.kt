@@ -3,8 +3,11 @@ package cloud.qingyangyunyun.ai.chat
 import cloud.qingyangyunyun.ai.clients.ClientsService
 import cloud.qingyangyunyun.custom.carInsurance.Data
 import kotlinx.serialization.json.*
+import net.sourceforge.htmlunit.corejs.javascript.Slot
+import net.sourceforge.htmlunit.xpath.operations.Bool
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 
 
 sealed interface Understanding {
@@ -21,7 +24,6 @@ sealed interface Understanding {
     data class Failed(val message: String) : Understanding
 }
 
-@Component
 class NLU(
     @Autowired val data: Data,
     @Autowired val clientsService: ClientsService
@@ -68,9 +70,7 @@ class NLU(
     输出：{"command":"招呼"}
      
 """.trimIndent()
-    val userInput = """
-    
-""".trimIndent()
+
 
 
     fun prompt(userInput: String): String {

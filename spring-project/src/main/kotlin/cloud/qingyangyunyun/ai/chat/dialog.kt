@@ -17,7 +17,7 @@ fun <T, U> Result<T>.flatmap(f: (T) -> Result<U>): Result<U> {
     }
 }
 
-@Component
+//@Component
 class Dialog(
     @Autowired val session: Session, @Autowired val data: Data, @Autowired val nlu: NLU,
     @Autowired val nlg: NLG

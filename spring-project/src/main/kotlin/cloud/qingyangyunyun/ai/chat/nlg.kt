@@ -21,7 +21,6 @@ sealed interface Replay {
 }
 
 
-@Component
 class NLG() {
 
 

@@ -3,13 +3,10 @@ import { Flex, ListItem, TypographyText, Avatar } from "ant-design-vue";
 import { UserOutlined, CustomerServiceOutlined } from "@ant-design/icons-vue";
 import ChatMessage from "./ChatMessage.vue";
 const props = defineProps<{
-    message: String;
-    sender: String;
+    message: { type: string; body: string };
+    sender: string;
 }>();
-const messageType =
-    props.message.includes("|") || props.message.includes("\n")
-        ? "markdown"
-        : "text";
+const messageType = props.message.type;
 </script>
 <template>
     <ListItem :class="props.sender == 'User' ? 'right' : 'left'">

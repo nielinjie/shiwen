@@ -92,7 +92,7 @@ sealed interface State {
 //                                if ((nextState as? Chatting)?.query == null)
 //                                    Replay.QueryRequest(listOf()).and(Replay.ShortedResult)
 //                                else
-                                    Replay.Result
+                                Replay.Result
                             Pair(nextState, replay)
                         },
                         onFailure = {

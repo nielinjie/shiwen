@@ -47,6 +47,7 @@ data class Query(
     var area: String? = null,
     var insuranceCompany: String? = null,
     var carOwner: String? = null,
+    var target: String? = null
 
 //    var procedureFee: String? =null,
 //    var underwritingPolicy: String? =null

@@ -3,19 +3,18 @@ import { defineProps } from "vue";
 import MarkdownIt from "markdown-it";
 import { TypographyText } from "ant-design-vue";
 const props = defineProps<{
-    message: String;
-    type: String;
+    message: {body:string,type:string};
 }>();
 const markdown = new MarkdownIt();
 </script>
 <template>
-    <TypographyText v-if="props.type == 'text'">{{
-        props.message
+    <TypographyText v-if="props.message.type == 'text'">{{
+        props.message.body
     }}</TypographyText>
     <div
         class="marking-down"
         v-else
-        v-html="markdown.render(props.message)"
+        v-html="markdown.render(props.message.body)"
     ></div>
 </template>
 <style>

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 
-@Component
 class Session(
     @Autowired val data: Data,
     @Autowired var logStore: LogStore? = null

@@ -28,7 +28,7 @@ export const useSocketStore = defineStore("socket", () => {
         };
         socket.value.onmessage = (e) => {
             socketMessages.value.push({
-                content: e.data,
+                content: JSON.parse(e.data),
                 direct: "down",
                 timestamp: Date.now(),
             });

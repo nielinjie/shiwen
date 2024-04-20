@@ -24,6 +24,8 @@ class Session(
         this.history.appendUser(input)
         logStore.add("current state:" n stateMachine.currentState.toString())
         stateMachine.onEvent(Input.UserInput(underStood))
+        logStore.add("changed state:" n stateMachine.currentState.toString())
+
     }
 
 

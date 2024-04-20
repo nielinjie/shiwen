@@ -1,6 +1,6 @@
 package cloud.qingyangyunyun.ai.agent
 
-const val CHAT_NOT_UNDERSTOOD = "对不起，我不明白你的意思。"
+const val CHAT_NOT_UNDERSTOOD = "对不起，我不太明白您需要我做什么。"
 
 const val CHAT_BYE = "谢谢，再见。"
 
@@ -10,7 +10,7 @@ fun slotsRequest(names: List<String>): String {
 }
 
 fun intentRequest(): String {
-    return "对不起，我不太明白您需要我做什么。"
+    return CHAT_NOT_UNDERSTOOD
 }
 
 fun help(): String {

@@ -1,11 +1,13 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.Either
+import cloud.qingyangyunyun.ai.log.LogStore
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.mockk.mockk
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -15,6 +17,7 @@ import org.springframework.ai.chat.prompt.Prompt
 
 
 class NLUTest : StringSpec({
+    val logStore = mockk<LogStore>()
     val chatDefine = object :Define {
         override val intentDefs: List<IntentDef>
             get() = (
@@ -60,7 +63,7 @@ class NLUTest : StringSpec({
             put("intent", "招呼")
             put("name", "小智")
         })
-        val nlu = NLU(chatDefine, chatClient)
+        val nlu = NLU(chatDefine, chatClient,logStore)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBe(GotIntent("招呼"))
@@ -71,7 +74,7 @@ class NLUTest : StringSpec({
         val chatClient = chatClientReturnJson(buildJsonObject {
             put("name", "小智")
         })
-        val nlu = NLU(chatDefine, chatClient)
+        val nlu = NLU(chatDefine, chatClient,logStore)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBeNull()

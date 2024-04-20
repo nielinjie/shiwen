@@ -1,8 +1,5 @@
 package cloud.qingyangyunyun.ai.agent
 
-import arrow.core.*
-import cloud.qingyangyunyun.ai.agent.car.defs
-
 
 class StateMachine(val define: Define) {
 
@@ -25,6 +22,8 @@ data class StateChanged(val newState: State) : Event
 
 interface State {
     fun next(event: Event, machine: StateMachine): State
+
+
     fun Event.useIntents(f: (UnderStood.Intents) -> State): State {
         return when (this@useIntents) {
             is Input.UserInput -> when (this.underStood) {
@@ -57,7 +56,7 @@ interface State {
         override fun next(event: Event, machine: StateMachine): State {
             return event.useIntents {
                 if (it.holding.hasIntent()) {
-                    val intentHolding = this@WithSlot.holding.merge(it.holding)
+                    val intentHolding = this@WithSlot.holding.merge(it.holding, machine.define)
                     if (intentHolding.satisfied(machine.define)) {
                         Satisfied(intentHolding)
                     } else {
@@ -77,7 +76,7 @@ interface State {
 
         override fun next(event: Event, machine: StateMachine): State {
             return event.useIntents {
-                val intentHolding = this@WithIntent.holding.merge(it.holding)
+                val intentHolding = this@WithIntent.holding.merge(it.holding, machine.define)
                 if (intentHolding.satisfied(machine.define)) {
                     Satisfied(intentHolding)
                 } else {
@@ -95,34 +94,41 @@ interface State {
                         try {
                             machine.define.run(holding, this)
                         } catch (e: Exception) {
-                            State.Failed(e.message ?: e.toString())
+                            State.Failed(e.message ?: e.toString(), holding)
                         }
                     } else {
                         this
                     }
                 }
 
-                else -> this
+                else -> event.useIntents {
+                    val intentHolding = this@Satisfied.holding.merge(it.holding, machine.define)
+                    if (intentHolding.satisfied(machine.define)) {
+                        Satisfied(intentHolding)
+                    } else {
+                        WithIntent(intentHolding)
+                    }
+                }
             }
         }
     }
 
-    data class Failed(val message: String) : State {
+    data class Failed(val message: String, val holding: IntentHolding) : State {
         override fun next(event: Event, machine: StateMachine): State {
             return event.useIntents {
                 if (it.holding.hasIntent()) {
-                    val intentHolding = it.holding.copy()
+                    val intentHolding = this@Failed.holding.merge(it.holding, machine.define)
                     if (intentHolding.satisfied(machine.define)) Satisfied(intentHolding) else WithIntent(intentHolding)
                 } else WithSlot(it.holding.copy())
             }
         }
     }
 
-    data class Result(val result: RunnerResult) : State {
+    data class Result(val result: RunnerResult, val holding: IntentHolding) : State {
         override fun next(event: Event, machine: StateMachine): State {
             return event.useIntents {
                 if (it.holding.hasIntent()) {
-                    val intentHolding = it.holding.copy()
+                    val intentHolding = this@Result.holding.merge(it.holding, machine.define)
                     if (intentHolding.satisfied(machine.define)) {
                         Satisfied(intentHolding)
                     } else {

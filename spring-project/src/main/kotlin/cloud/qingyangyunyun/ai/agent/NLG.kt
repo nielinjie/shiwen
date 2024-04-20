@@ -16,7 +16,9 @@ fun toOutput(reply: Reply): Output {
 
         is Reply.General -> reply.text.plain()
 
-        is Reply.Result -> reply.data.toString().plain() //TODO
+        is Reply.Result -> reply.data.toOutput()
+
+        is Reply.Composite -> reply.replies.map { toOutput(it) }.reduce { acc, output -> acc + output }
 
         else -> fallback().plain()
     }

@@ -7,24 +7,15 @@ import cloud.qingyangyunyun.ai.agent.*
 import cloud.qingyangyunyun.custom.carInsurance.Data
 import cloud.qingyangyunyun.custom.carInsurance.Query
 
+const val TERM_RESET = "重置"
+const val TERM_QUERY = "查询"
+const val TERM_HELP = "帮助"
+
 val carDefine = object : Define {
     val data = Data()
     override val intentDefs = defs
     override fun validateIntent(holding: IntentHolding): Either<String, IntentHolding> {
-        require(holding.intent.isSome())
-        return when (holding.intent.getOrNull()?.name) {
-            "重置" -> {
-                (holding).right()
-            }
-
-            "查询" -> {
-                (holding).right()
-            }
-
-            null -> "no intent find".left()
-
-            else -> ("not support intent").left()
-        }
+        return super.validateIntent(holding) // .flatMap() //checking slot.
     }
 
 
@@ -51,30 +42,30 @@ val carDefine = object : Define {
         }
     }
 
-    override fun run(holding: IntentHolding,currentState: State): State {
+    override fun run(holding: IntentHolding, currentState: State): State {
         require(holding.intent.isSome())
         return when (holding.intent.getOrNull()?.name) {
-            "重置" -> {
+            TERM_RESET -> {
                 State.Start
             }
 
-            "查询" -> {
+            TERM_QUERY -> {
                 val query = holding.query()
                 query.map {
                     data.query(it)
                 }.fold(
-                    { State.Failed(it) },
+                    { State.Failed(it, holding) },
                     {
                         State.Result(
                             it.toRunnerResult(
                                 holding.slotValue("target")
-                            )
+                            ), holding
                         )
                     }
                 )
             }
 
-            else -> error("not support")
+            else -> currentState // do nothing if not specified
         }
     }
 }

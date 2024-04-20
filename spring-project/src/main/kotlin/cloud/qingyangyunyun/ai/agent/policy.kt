@@ -1,6 +1,6 @@
 package cloud.qingyangyunyun.ai.agent
 
-import org.springframework.beans.factory.annotation.Autowired
+import cloud.qingyangyunyun.ai.agent.car.TERM_HELP
 import org.springframework.stereotype.Component
 
 
@@ -19,13 +19,26 @@ interface Reply : Action {
     data class Result(val data: cloud.qingyangyunyun.ai.agent.RunnerResult) : Reply
     data class Composite(val replies: List<Reply>) : Reply
 
-    operator fun plus(reply: Reply): Reply {
+    operator fun plus(reply: Reply?): Reply {
         return when (this) {
-            is Composite -> Composite(replies + reply)
-            else -> Composite(listOf(this, reply))
+            is Composite -> reply?.let { Composite(replies + it) } ?: this
+            else -> Composite(reply?.let { listOf(this, it) } ?: listOf(this))
         }
     }
 }
+
+
+fun Input.useIntents(): GotIntent? {
+    return when (this) {
+        is Input.UserInput -> when (this.underStood) {
+            is UnderStood.Intents -> this.underStood.holding.intent.getOrNull()
+            else -> null
+        }
+
+        else -> null
+    }
+}
+
 @Component
 class Policy(
 //    @Autowired
@@ -33,19 +46,15 @@ class Policy(
 ) {
     fun decide(state: State, lastedInput: Input?): Action {
 
-        var replyDirectly : Reply? = when(lastedInput){ //TODO replay 根据最后一个输入，需要与根据state的replay综合。
-            is Input.UserInput -> {
-                when(lastedInput.underStood){
-                    is UnderStood.Intents -> {
-                        Reply.IntentRequest
-                    }
-                    else -> null
-                }
+        val replyDirectly: Reply? = lastedInput?.useIntents()?.let {
+            val name = it.name
+            when (name) {
+                TERM_HELP -> Reply.Help
+                else -> null
             }
-            else -> null
         }
 
-        return when (state) {
+        val stateReply: Reply? = when (state) {
             is State.Start -> {
                 Reply.Greeting
             }
@@ -68,8 +77,12 @@ class Policy(
 
 
             else -> {
-                Reply.Help
+                null
             }
+        }
+        return when (replyDirectly) {
+            null -> stateReply ?: Reply.Fallback
+            else -> replyDirectly + stateReply
         }
     }
 }

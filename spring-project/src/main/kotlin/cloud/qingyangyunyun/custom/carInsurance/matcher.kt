@@ -33,7 +33,7 @@ class NotMatcher(val matcher: Matcher) : Matcher {
 
 val alwaysKeywords = listOf("不限", "不限制", "无要求", "无限制")
 
-val synonyms = listOf(setOf("除成都外的四川地区", "成都以外"))
+val synonyms = listOf(setOf("除成都外的四川地区", "成都以外","地市区","省内"))
 fun synonym(word: String): Set<String> {
     return synonyms.find {
         it.contains(word)

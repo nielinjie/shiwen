@@ -33,6 +33,12 @@ watch(messagesHistory, () => {
         }
     });
 });
+function send(){
+chatStore.sendMessage()
+}
+function nothing(e){
+    e.preventDefault()
+}
 </script>
 <template>
     <div>
@@ -49,8 +55,10 @@ watch(messagesHistory, () => {
                 </List>
             </div>
             <Flex gap="middle">
-                <Input v-model:value="messageInputting" size="large"></Input>
-                <Button size="large" @click="chatStore.sendMessage()"
+                <Input v-model:value="messageInputting" 
+                @keydown.native.enter="send" 
+                @keydown.native.229. = "nothing" size="large"></Input>
+                <Button size="large" @click="send"
                     >Send</Button
                 >
             </Flex>

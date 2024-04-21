@@ -34,8 +34,8 @@ router.afterEach((to) => {
                 <MenuItem key="/chat">
                     <RouterLink to="/chat">对话调校</RouterLink>
                 </MenuItem>
-                <MenuItem key="/prompLib">
-                    <RouterLink to="/prompLib">Prompt收藏</RouterLink></MenuItem
+                <MenuItem key="/promptLib">
+                    <RouterLink to="/promptLib">Prompt收藏</RouterLink></MenuItem
                 >
                 <MenuItem key="/docbase">
                     <RouterLink to="/docbase"> 文档知识管理</RouterLink>

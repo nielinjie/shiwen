@@ -16,7 +16,7 @@ const router = createRouter({
         },
 
         {
-            path: "/prompLib",
+            path: "/promptLib",
             name: "promptLib",
             component: () => import("@/views/PromptLibView.vue"),
         },

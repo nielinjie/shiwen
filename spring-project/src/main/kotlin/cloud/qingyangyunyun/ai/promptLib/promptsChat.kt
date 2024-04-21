@@ -33,7 +33,12 @@ class PromptsChatSeed(@Autowired paths: Paths) : Source {
 
 }
 
-fun main() {
+
+//fun main(){
+//    getDoc()
+//}
+
+fun getDoc() {
     fun getDocument(url: String?): HtmlPage? {
         var page: HtmlPage? = null
         try {

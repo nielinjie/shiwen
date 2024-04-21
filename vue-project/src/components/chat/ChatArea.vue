@@ -5,26 +5,8 @@ import { ref, watch, nextTick } from "vue";
 import { List, Flex, Input, Button, TypographyTitle } from "ant-design-vue";
 import type { Message } from "@/stores/socketStore";
 const chatStore = useChatStore();
-const { history, messageInputting } = storeToRefs(chatStore);
-export interface MessageItemDisplay {
-    message: {
-        type: string;
-        body: string;
-    }
-    sender: string;
-}
-const top = { message: {body:"Welcome to the chat!",type:"text"}, sender: "Bot"};
+const { history, messageInputting, messagesHistory } = storeToRefs(chatStore);
 
-const messagesHistory = ref<MessageItemDisplay[]>([top]);
-watch(history.value, (newVal) => {
-    messagesHistory.value = [
-        top,
-        ...newVal.map((message: Message) => ({
-            message: message.content,
-            sender: message.direct === "down" ? "Bot" : "User",
-        })),
-    ];
-});
 const chatList = ref<any>(null);
 watch(messagesHistory, () => {
     nextTick(() => {
@@ -33,11 +15,11 @@ watch(messagesHistory, () => {
         }
     });
 });
-function send(){
-chatStore.sendMessage()
+function send() {
+    chatStore.sendMessage();
 }
-function nothing(e){
-    e.preventDefault()
+function nothing(e: any) {
+    e.preventDefault();
 }
 </script>
 <template>
@@ -55,12 +37,13 @@ function nothing(e){
                 </List>
             </div>
             <Flex gap="middle">
-                <Input v-model:value="messageInputting" 
-                @keydown.native.enter="send" 
-                @keydown.native.229. = "nothing" size="large"></Input>
-                <Button size="large" @click="send"
-                    >Send</Button
-                >
+                <Input
+                    v-model:value="messageInputting"
+                    @keydown.native.enter="send"
+                    @keydown.native.229.="nothing"
+                    size="large"
+                ></Input>
+                <Button size="large" @click="send">Send</Button>
             </Flex>
         </Flex>
     </div>

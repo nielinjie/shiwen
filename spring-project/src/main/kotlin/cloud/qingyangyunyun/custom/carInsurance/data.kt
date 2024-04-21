@@ -109,9 +109,3 @@ fun fromCsv2(line: List<String>): QR2 {
     )
 
 }
-
-fun main() {
-    val data = Data()
-    val result = data.dumpCsv("cloud/qingyangyunyun/custom/carInsurance/policy.csv")
-    println(result)
-}

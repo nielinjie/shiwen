@@ -1,6 +1,7 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.toOption
+import cloud.qingyangyunyun.ai.clients.ClientsService
 import cloud.qingyangyunyun.ai.log.LogStore
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -45,14 +46,14 @@ class NLU(
     @Autowired
     val chatDefine: IntentsDefine,
     @Autowired
-    val chatClient: ChatClient,
+    val clientsService: ClientsService,
     @Autowired
     val logStore: LogStore
 ) {
     fun understand(text: String): UnderStood {
         val prompt = promptForIntents(chatDefine.intentDefs) nn "UserInput:" n text
         return runCatching {
-            chatClient.call(prompt).also {
+            clientsService.getClient("gpt35").call(prompt).also {
                 logStore.add("chatClient returned" n it)
             }
         }.flatmap {

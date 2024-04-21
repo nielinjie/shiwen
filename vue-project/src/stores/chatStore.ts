@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useSocketStore, type Message } from "./socketStore";
-
+export interface MessageItemDisplay {
+    message: {
+        type: string;
+        body: string;
+    };
+    sender: string;
+}
 export const useChatStore = defineStore("chat", () => {
     const messageInputting = ref("");
     const socketStore = useSocketStore();
@@ -33,9 +39,25 @@ export const useChatStore = defineStore("chat", () => {
     setTimeout(() => {
         socketStore.openSocket();
     }, 100);
+    const top = {
+        message: { body: "Welcome to the chat!", type: "text" },
+        sender: "Bot",
+    };
+
+    const messagesHistory = ref<MessageItemDisplay[]>([top]);
+    watch(history.value, (newVal) => {
+        messagesHistory.value = [
+            top,
+            ...newVal.map((message: Message) => ({
+                message: message.content,
+                sender: message.direct === "down" ? "Bot" : "User",
+            })),
+        ];
+    });
     return {
         messageInputting,
         sendMessage,
         history,
+        messagesHistory,
     };
 });

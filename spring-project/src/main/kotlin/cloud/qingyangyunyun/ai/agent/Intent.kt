@@ -6,8 +6,8 @@ import arrow.core.Some
 
 
 data class IntentHolding(val intent: Option<GotIntent>, val slots: List<GotSlot>) {
-    fun satisfied(define: Define) = define.validateIntent(this).isRight() //TODO use Either
-    fun merge(b: IntentHolding, define: Define): IntentHolding {
+    fun satisfied(define: IntentsDefine) = define.validateIntent(this).isRight() //TODO use Either
+    fun merge(b: IntentHolding, define: IntentsDefine): IntentHolding {
 //        return IntentHolding(
 //            intent.recover { b.intent.bind() }, (slots + b.slots).distinctBy { it.name }
 //        )

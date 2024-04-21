@@ -5,9 +5,9 @@ import arrow.core.left
 import arrow.core.right
 
 
-interface Define {
+interface IntentsDefine {
     val intentDefs: List<IntentDef>
-    fun validateIntent(holding: IntentHolding): Either<String, IntentHolding>{
+    fun validateIntent(holding: IntentHolding): Either<String, IntentHolding> {
         return when (val intentName = holding.intent.getOrNull()?.name) {
             null -> "no intent  find".left()
 
@@ -20,6 +20,7 @@ interface Define {
             }
         }
     }
+
     fun run(holding: IntentHolding, currentState: State): State
     fun intentDef(name: String): IntentDef? = intentDefs.find { it.name == name }
 }

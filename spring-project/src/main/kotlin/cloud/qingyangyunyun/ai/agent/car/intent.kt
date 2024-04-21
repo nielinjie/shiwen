@@ -18,46 +18,61 @@ val defs = listOf(
         listOf("查找", "search"),
         listOf(
             SlotDef(
-                "目标",
-                listOf("字段"),
-                "target",
-                "string",
-                false,
-                "费用、公司、承保政策、车型、地区、车主、详细、全部、有没有".list(),
-                "费用、公司、承保政策、车型、详细、全部、有没有、可不可以、能不能".list(),
-                "查询目标"
+                name = "目标",
+                alias = listOf("字段"),
+                jsonName = "target",
+                type = "string",
+                required = false,
+                allowedValues = "费用、公司、承保政策、车型、地区、车主、核保要求、详细、有没有".list(),
+                examples = "费用、公司、承保政策、车型、核保要求、车主、地区、详细、全部、有没有、可不可以、能不能".list(),
+                description = "查询目标"
             ),
             SlotDef(
-                "车型",
-                emptyList(),
-                "carModel",
-                "string",
-                false,
-                "新能源网约车、新能源私家车、燃油网约车、燃油私家车、燃油货车、新能源货车".list(),
-                "新能源网约车、新能源私家车、燃油网约车、燃油私家车、燃油货车、新能源货车".list(),
-                "查询车型"
+                name = "车型",
+                alias = emptyList(),
+                jsonName = "carModel",
+                type = "string",
+                required = false,
+                allowedValues = "新能源网约车、新能源私家车、燃油网约车、燃油私家车、燃油货车、新能源货车".list(),
+                examples = "新能源网约车、新能源私家车、燃油网约车、燃油私家车、燃油货车、新能源货车".list(),
+                description = "查询车型"
             ),
             SlotDef(
-                "地区", emptyList(), "area", "string", false,
-                "成都、省内、成都以外、地市区".list(), "成都、省内、成都以外、地市区".list(), "查询地区"
+                name = "地区",
+                alias = emptyList(),
+                jsonName = "area",
+                type = "string",
+                required = false,
+                allowedValues = "成都、省内、成都以外、地市区".list(),
+                examples = "成都、省内、成都以外、地市区".list(),
+                description = "查询地区"
             ),
             SlotDef(
-                "车主", emptyList(), "carOwner", "string", false,
-                "个人、商贸、租赁".list(), "个人、商贸、租赁".list(),
-                "查询车主"
+                name = "车主", alias = emptyList(),
+                jsonName = "carOwner", type = "string",
+                required = false,
+                allowedValues = "个人、商贸、租赁".list(), examples = "个人、商贸、租赁".list(),
+                description = "查询车主"
             ),
             SlotDef(
-                "保险公司", emptyList(), "insuranceCompany", "string", false,
-                companies, companies, "查询保险公司"
+                name = "保险公司",
+                alias = emptyList(),
+                jsonName = "insuranceCompany",
+                type = "string",
+                required = false,
+                allowedValues = companies,
+                examples = companies,
+                description = "查询保险公司"
             ),
-            SlotDef("数据集",
-                emptyList(),
-                "dataset",
-                "string",
-                false,
-                "承运人责任".list(),
-                "承运人责任、承运人、承运人责任险".list(),
-                "查询数据集"
+            SlotDef(
+                name = "数据集",
+                alias = emptyList(),
+                jsonName = "dataset",
+                type = "string",
+                required = false,
+                allowedValues = "承运人责任".list(),
+                examples = "承运人责任、承运人险、承运人、承运人责任险".list(),
+                description = "查询数据集"
             )
         ),
         "查询数据",

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRouter } from "vue-router";
 import {
     TypographyText,
     TypographyTitle,
@@ -12,6 +12,11 @@ import {
 } from "ant-design-vue";
 import { ref } from "vue";
 const selectedMenu = ref<string[]>(["/"]);
+const router = useRouter();
+
+router.afterEach((to) => {
+    selectedMenu.value = [to.path];
+});
 </script>
 
 <template>
@@ -41,7 +46,6 @@ const selectedMenu = ref<string[]>(["/"]);
                 <MenuItem key="/about">
                     <RouterLink to="/about">关于</RouterLink>
                 </MenuItem>
-                
             </Menu>
             <TypographyTitle
                 :level="2"

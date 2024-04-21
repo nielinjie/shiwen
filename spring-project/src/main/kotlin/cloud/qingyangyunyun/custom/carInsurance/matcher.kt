@@ -31,9 +31,16 @@ class NotMatcher(val matcher: Matcher) : Matcher {
     }
 }
 
+//通配词
 val alwaysKeywords = listOf("不限", "不限制", "无要求", "无限制")
-
+// 同义词
 val synonyms = listOf(setOf("除成都外的四川地区", "成都以外","地市区","省内"))
+
+//TODO 概括词
+//比如网约车，包括燃油网约和新能源网约车
+
+//TODO 词语们可能需要分字段？
+
 fun synonym(word: String): Set<String> {
     return synonyms.find {
         it.contains(word)
@@ -62,6 +69,18 @@ fun Query.matcher(): Matcher {
 
     if (carOwner != null) {
         matchers.add(ContentMatcher(carOwner!!, 3))
+    }
+    return if (matchers.isEmpty()) {
+        tureMatcher()
+    } else {
+        AndMatcher(matchers)
+    }
+}
+
+fun Query2.matcher(): Matcher {
+    val matchers = mutableListOf<Matcher>()
+    if (insuranceCompany != null) {
+        matchers.add(ContentMatcher(insuranceCompany!!, 0))
     }
     return if (matchers.isEmpty()) {
         tureMatcher()

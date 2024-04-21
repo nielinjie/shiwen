@@ -1,7 +1,6 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.toOption
-import cloud.qingyangyunyun.ai.chat.flatmap
 import cloud.qingyangyunyun.ai.log.LogStore
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -11,6 +10,14 @@ import org.springframework.ai.chat.ChatClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+
+fun <T, U> Result<T>.flatmap(f: (T) -> Result<U>): Result<U> {
+    return when {
+        this.isSuccess -> f(this.getOrNull()!!)
+        this.isFailure -> return Result.failure(this.exceptionOrNull()!!)
+        else -> throw IllegalStateException("Result is neither success nor failure")
+    }
+}
 
 interface UnderStood {
     data class Intents(val holding: IntentHolding) : UnderStood {
@@ -36,7 +43,7 @@ interface UnderStood {
 @Component
 class NLU(
     @Autowired
-    val chatDefine: Define,
+    val chatDefine: IntentsDefine,
     @Autowired
     val chatClient: ChatClient,
     @Autowired

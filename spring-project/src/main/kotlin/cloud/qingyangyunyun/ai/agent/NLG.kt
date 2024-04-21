@@ -1,6 +1,6 @@
 package cloud.qingyangyunyun.ai.agent
 
-fun toOutput(reply: Reply): Output {
+fun toOutput(reply: Reply, tone: Tone): Output {
     return when (reply) {
         is Reply.IntentRequest -> intentRequest().plain()
 
@@ -10,7 +10,7 @@ fun toOutput(reply: Reply): Output {
 
         is Reply.Ending -> bye().plain()
 
-        is Reply.Help -> help().plain()
+        is Reply.Help -> tone.help()
 
         is Reply.Greeting -> greeting().plain()
 
@@ -18,7 +18,7 @@ fun toOutput(reply: Reply): Output {
 
         is Reply.Result -> reply.data.toOutput()
 
-        is Reply.Composite -> reply.replies.map { toOutput(it) }.reduce { acc, output -> acc + output }
+        is Reply.Composite -> reply.replies.map { toOutput(it,tone) }.reduce { acc, output -> acc + output }
 
         else -> fallback().plain()
     }

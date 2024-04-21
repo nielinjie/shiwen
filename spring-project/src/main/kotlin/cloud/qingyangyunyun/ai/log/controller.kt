@@ -1,5 +1,6 @@
 package cloud.qingyangyunyun.ai.log
 
+import arrow.core.raise.catch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.springframework.web.socket.TextMessage
@@ -14,8 +15,11 @@ class LogHandler(val store: LogStore) : TextWebSocketHandler() {
     init {
         store.listener = { log: Log<String> ->
             Json.encodeToString(log).also {
-                println(it)
-                this.session?.sendMessage(TextMessage(it))
+                try {
+                    this.session?.sendMessage(TextMessage(it))
+                }catch (_: Exception){
+                }
+
             }
         }
     }

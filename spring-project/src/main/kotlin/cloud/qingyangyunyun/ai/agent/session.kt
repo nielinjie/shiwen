@@ -2,12 +2,16 @@ package cloud.qingyangyunyun.ai.agent
 
 import cloud.qingyangyunyun.ai.log.LogStore
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 @Component
+@Scope("prototype")
 class Session(
     @Autowired
-    val define: Define,
+    val define: IntentsDefine,
+    @Autowired
+    val tone:Tone,
     @Autowired
     val nlu: NLU,
     @Autowired
@@ -36,9 +40,15 @@ class Session(
             is Reply -> action
             else -> error("not supported")
         }.let {
-            toOutput(it)
+            toOutput(it,tone)
         }.also {
             this.history.appendAgent(it.body)
         }
+    }
+
+    fun reset() {
+        stateMachine = StateMachine(define)
+        history = History()
+        latestInput = null
     }
 }

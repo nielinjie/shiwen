@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
 class StateTests : StringSpec({
-    val define = object : Define {
+    val define = object : IntentsDefine {
         override val intentDefs: List<IntentDef>
             get() = (
                     listOf(

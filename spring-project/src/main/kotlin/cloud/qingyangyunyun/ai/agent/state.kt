@@ -1,7 +1,7 @@
 package cloud.qingyangyunyun.ai.agent
 
 
-class StateMachine(val define: Define) {
+class StateMachine(val define: IntentsDefine) {
 
     var currentState: State = State.Start
     fun onEvent(event: Event) {

@@ -1,7 +1,9 @@
 package cloud.qingyangyunyun.ai
 
-import cloud.qingyangyunyun.ai.agent.Define
+import cloud.qingyangyunyun.ai.agent.IntentsDefine
+import cloud.qingyangyunyun.ai.agent.Tone
 import cloud.qingyangyunyun.ai.agent.car.carDefine
+import cloud.qingyangyunyun.ai.agent.car.carTone
 import cloud.qingyangyunyun.ai.clients.ClientsService
 import org.springframework.ai.chat.ChatClient
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,9 +19,11 @@ class DemoApplication() {
     lateinit var clientsService: ClientsService
 
     @Bean
-    fun def(): Define {
+    fun def(): IntentsDefine {
         return carDefine
     }
+    @Bean
+    fun tone(): Tone = carTone
 
     @Bean
     fun chatClient(): ChatClient {

@@ -2,13 +2,18 @@ package cloud.qingyangyunyun.ai.agent
 
 import kotlinx.serialization.Serializable
 
+
+enum class Format {
+    Short, Long
+}
+
 @Serializable
 data class Output(val type: String, val body: String) {
     operator fun plus(output: Output): Output {
         return when (this.type to output.type) {
             "plainText" to "plainText" -> plainText(this.body n output.body)
             "plainText" to "markdown" -> markdown((this.body) nn output.body)
-            "markdown" to "plainText" -> markdown(this.body n output.body)
+            "markdown" to "plainText" -> markdown(this.body nn output.body)
             "markdown" to "markdown" -> markdown(this.body nn output.body)
             else -> plainText(this.body + output.body)
         }
@@ -44,5 +49,5 @@ fun markdown(text: String): Output {
 }
 
 fun String.plain() = plainText(this)
-
+fun String.md() = markdown(this)
 

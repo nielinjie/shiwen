@@ -18,7 +18,7 @@ import org.springframework.ai.chat.prompt.Prompt
 
 class NLUTest : StringSpec({
     val logStore = mockk<LogStore>()
-    val chatDefine = object :Define {
+    val chatDefine = object :IntentsDefine {
         override val intentDefs: List<IntentDef>
             get() = (
                     listOf(

@@ -67,13 +67,13 @@ fun executeCommand(command: String): String {
     return reader.readText().trim()
 }
 task("copyFiles", type = Copy::class) {
-    from("../vue-project/dist")
+    from("./vue-project/dist")
     into("src/main/resources/static")
     dependsOn("yarnBuild")
 }
 task("yarnBuild", type = Exec::class) {
     val yarn = executeCommand("which yarn")
-    workingDir("../vue-project")
+    workingDir("./vue-project")
     commandLine(yarn, "build")
 }
 

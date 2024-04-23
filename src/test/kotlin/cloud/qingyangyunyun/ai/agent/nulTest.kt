@@ -1,12 +1,14 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.Either
+import cloud.qingyangyunyun.ai.clients.ClientsService
 import cloud.qingyangyunyun.ai.log.LogStore
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
@@ -18,7 +20,7 @@ import org.springframework.ai.chat.prompt.Prompt
 
 class NLUTest : StringSpec({
     val logStore = mockk<LogStore>()
-    val chatDefine = object :IntentsDefine {
+    val chatDefine = object : IntentsDefine {
         override val intentDefs: List<IntentDef>
             get() = (
                     listOf(
@@ -50,7 +52,7 @@ class NLUTest : StringSpec({
             TODO("Not yet implemented")
         }
 
-        override fun run(holding: IntentHolding,currentState: State): State {
+        override fun run(holding: IntentHolding, currentState: State): State {
             TODO("Not yet implemented")
         }
     }
@@ -59,11 +61,13 @@ class NLUTest : StringSpec({
         println(prompt)
     }
     "understand" {
-        val chatClient = chatClientReturnJson(buildJsonObject {
+        val client = mockk<ClientsService>()
+        every { client.getClient("gpt35") } returns chatClientReturnJson(buildJsonObject {
             put("intent", "招呼")
             put("name", "小智")
         })
-        val nlu = NLU(chatDefine, chatClient,logStore)
+
+        val nlu = NLU(chatDefine, client, logStore)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBe(GotIntent("招呼"))
@@ -71,10 +75,13 @@ class NLUTest : StringSpec({
         }
     }
     "understand with out intent" {
-        val chatClient = chatClientReturnJson(buildJsonObject {
+
+        val client = mockk<ClientsService>()
+        every { client.getClient("gpt35") } returns chatClientReturnJson(buildJsonObject {
             put("name", "小智")
         })
-        val nlu = NLU(chatDefine, chatClient,logStore)
+
+        val nlu = NLU(chatDefine, client, logStore)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBeNull()

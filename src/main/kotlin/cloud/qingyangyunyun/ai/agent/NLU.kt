@@ -1,6 +1,7 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.toOption
+import cloud.qingyangyunyun.ai.clients.CacheHolder
 import cloud.qingyangyunyun.ai.clients.ClientsService
 import cloud.qingyangyunyun.ai.log.LogStore
 import kotlinx.serialization.json.Json
@@ -48,28 +49,35 @@ class NLU(
     @Autowired
     val clientsService: ClientsService,
     @Autowired
-    val logStore: LogStore
+    val logStore: LogStore,
+    @Autowired(required = false)
+    val cacheHolder: CacheHolder<String, UnderStood>?
 ) {
     fun understand(text: String): UnderStood {
         val prompt = promptForIntents(chatDefine.intentDefs) nn "UserInput:" n text
-        return runCatching {
-            clientsService.getClient("gpt35").call(prompt).also {
-                logStore.add("chatClient returned" n it)
-            }
-        }.flatmap {
-            runCatching { Json.parseToJsonElement(it) }.recover {
-                //有结果，但不是json
-                JsonObject(mapOf())
-            }
-        }.fold(
-            onSuccess = {
-                UnderStood.Intents.fromJson(it) ?: UnderStood.General(text)
-            },
-            onFailure = {
-                UnderStood.Failed(it.message ?: "")
-            }
-        )
+        return cacheHolder.getOrPut(prompt) {
+            runCatching {
+                clientsService.getClient("gpt35").call(prompt).also {
+                    logStore.add("chatClient returned" n it)
+                }
+            }.flatmap {
+                runCatching { Json.parseToJsonElement(it) }.recover {
+                    //有结果，但不是json
+                    JsonObject(mapOf())
+                }
+            }.fold(
+                onSuccess = {
+                    UnderStood.Intents.fromJson(it) ?: UnderStood.General(text)
+                },
+                onFailure = {
+                    UnderStood.Failed(it.message ?: "")
+                }
+            )
 
+        }
     }
+}
+fun CacheHolder<*,*>?.getOrPut(prompt: String, defaultValue: () -> UnderStood): UnderStood {
+    return this?.getOrPut(prompt) { defaultValue() } ?: defaultValue()
 }
 

@@ -30,9 +30,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.5.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+
     implementation("xyz.nietongxue:common-jvm:1.0-SNAPSHOT")
     implementation("cloud.qingyangyunyun:docbaseK-jvm:1.0-SNAPSHOT")
     implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))

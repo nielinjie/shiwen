@@ -6,7 +6,10 @@ import cloud.qingyangyunyun.ai.workshop.WorkshopService
 import cloud.qingyangyunyun.ai.workshop.Workspace
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.antlr.v4.runtime.misc.MultiMap
 import org.springframework.ai.chat.ChatClient
+import org.springframework.ai.chat.ChatResponse
+import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.ollama.OllamaChatClient
 import org.springframework.ai.ollama.api.OllamaApi
 import org.springframework.ai.ollama.api.OllamaOptions
@@ -18,7 +21,12 @@ import org.springframework.stereotype.Component
 
 
 @Component
-class ClientsService(@Autowired val workshopService: WorkshopService, @Autowired val paths: Paths) {
+class ClientsService(
+    @Autowired val workshopService: WorkshopService,
+    @Autowired val paths: Paths,
+    @Autowired(required = false) val recorder: Recorder? = null,
+//    @Autowired(required = false) val cacheHolder: CacheHolder? = null //cache这个功能不应该有用。应该在更高层面cache。需要先高层验证结果的合理性。
+) {
     val clients = mutableMapOf<String, ChatClient>()
     val apis = mutableMapOf<String, Any>()
     val configData = JsonData(paths.configPath)
@@ -101,26 +109,34 @@ class ClientsService(@Autowired val workshopService: WorkshopService, @Autowired
 
     private final fun fromConfigs(configs: ClientConfigs) {
         clients.clear()
-        configs.clients.forEach {
-            clients[it.name] = when (it.api) {
+        configs.clients.forEach { clientConfig ->
+            clients[clientConfig.name] = when (clientConfig.api) {
                 "openai" -> OpenAiChatClient(
                     this.apis["openai"] as OpenAiApi,
                     OpenAiChatOptions.builder().apply {
-                        it.config["model"]?.let { withModel(it) }
-                        it.config["temperature"]?.let { withTemperature(it.toFloat()) }
+                        clientConfig.config["model"]?.let { withModel(it) }
+                        clientConfig.config["temperature"]?.let { withTemperature(it.toFloat()) }
                     }.build()
                 )
 
                 "ollama" -> OllamaChatClient(this.apis["ollama"] as OllamaApi).withDefaultOptions(
                     OllamaOptions().apply {
-                        it.config["model"]?.let { withModel(it) }
-                        it.config["temperature"]?.let { withTemperature(it.toFloat()) }
+                        clientConfig.config["model"]?.let { withModel(it) }
+                        clientConfig.config["temperature"]?.let { withTemperature(it.toFloat()) }
                     }
                 )
 
-                else -> throw Exception("Unknown client type ${it.api}")
+                else -> throw Exception("Unknown client type ${clientConfig.api}")
+            }.let {
+                if (this.recorder != null) recorded(
+                    clientConfig.name, it, this.recorder!!
+                ) else it
             }
+//                .let {
+//                if (this.cacheHolder != null) cached(it, this.cacheHolder!!, clientConfig.name) else it
+//            }
         }
     }
+
 }
 

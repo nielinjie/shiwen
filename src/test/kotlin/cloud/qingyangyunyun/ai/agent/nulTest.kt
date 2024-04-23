@@ -67,7 +67,7 @@ class NLUTest : StringSpec({
             put("name", "小智")
         })
 
-        val nlu = NLU(chatDefine, client, logStore)
+        val nlu = NLU(chatDefine, client, logStore,null)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBe(GotIntent("招呼"))
@@ -81,7 +81,7 @@ class NLUTest : StringSpec({
             put("name", "小智")
         })
 
-        val nlu = NLU(chatDefine, client, logStore)
+        val nlu = NLU(chatDefine, client, logStore,null)
         val result = nlu.understand("你好，我是小智")
         result.shouldBeInstanceOf<UnderStood.Intents>().also {
             it.holding.intent.shouldBeNull()

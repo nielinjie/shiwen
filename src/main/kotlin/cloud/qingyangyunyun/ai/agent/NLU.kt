@@ -1,7 +1,7 @@
 package cloud.qingyangyunyun.ai.agent
 
 import arrow.core.toOption
-import cloud.qingyangyunyun.ai.clients.CacheHolder
+import cloud.qingyangyunyun.ai.cache.CacheHolder
 import cloud.qingyangyunyun.ai.clients.ClientsService
 import cloud.qingyangyunyun.ai.log.LogStore
 import kotlinx.serialization.json.Json
@@ -77,7 +77,7 @@ class NLU(
         }
     }
 }
-fun CacheHolder<*,*>?.getOrPut(prompt: String, defaultValue: () -> UnderStood): UnderStood {
+fun CacheHolder<*, *>?.getOrPut(prompt: String, defaultValue: () -> UnderStood): UnderStood {
     return this?.getOrPut(prompt) { defaultValue() } ?: defaultValue()
 }
 

@@ -3,12 +3,11 @@ import { useChatStore } from "@/stores/chatStore";
 import { storeToRefs } from "pinia";
 import { ref, watch, nextTick } from "vue";
 import { List, Flex, Input, Button, TypographyTitle } from "ant-design-vue";
-import type { Message } from "@/stores/socketStore";
 const chatStore = useChatStore();
-const { history, messageInputting, messagesHistory } = storeToRefs(chatStore);
+const { history, messageInputting } = storeToRefs(chatStore);
 
 const chatList = ref<any>(null);
-watch(messagesHistory, () => {
+watch(history, () => {
     nextTick(() => {
         if (chatList.value != null) {
             chatList.value.scrollTop = chatList.value?.scrollHeight;
@@ -27,11 +26,11 @@ function nothing(e: any) {
         <Flex vertical gap="large">
             <TypographyTitle :level="3">Chat Here: </TypographyTitle>
             <div class="chatList" ref="chatList">
-                <List size="large" bordered :dataSource="messagesHistory">
+                <List size="large" bordered :dataSource="history">
                     <template #renderItem="{ item }">
                         <ChatItem
                             :sender="item.sender"
-                            :message="item.message"
+                            :message="item.content"
                         ></ChatItem>
                     </template>
                 </List>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useWorkspaceStore } from "@/stores/workspaceStore";
-import { Button, Space, Flex, TypographyText } from "ant-design-vue";
+import { Button, Flex, TypographyText } from "ant-design-vue";
 import { h } from "vue";
-import { SaveOutlined, FolderOpenOutlined,UploadOutlined } from "@ant-design/icons-vue";
+import { SaveOutlined, UploadOutlined } from "@ant-design/icons-vue";
 
 const workspaceStore = useWorkspaceStore();
 </script>

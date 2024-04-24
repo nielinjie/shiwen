@@ -1,63 +1,53 @@
-import { defineStore } from "pinia";
-import { computed, ref, watch } from "vue";
-import { useSocketStore, type Message } from "./socketStore";
-export interface MessageItemDisplay {
-    message: {
+import { defineStore, storeToRefs } from "pinia";
+import { ref, watch } from "vue";
+import { useMessageStore } from "./messageStore";
+export interface MessageItem {
+    content: {
         type: string;
         body: string;
     };
     sender: string;
+    timeStamp: number;
 }
 export const useChatStore = defineStore("chat", () => {
     const messageInputting = ref("");
-    const socketStore = useSocketStore();
-    const history = ref<Message[]>([]);
-    watch(
-        socketStore.socketMessages, 
-        (newMessages) => {
-        const newM = newMessages.filter(
+    const history = ref<MessageItem[]>([]);
+    const ms = useMessageStore();
+    const { chats } = storeToRefs(ms);
+    watch(chats.value, (newValue: MessageItem[]) => {
+        const newM = newValue.filter(
             (it) =>
-                it.timestamp >
-                (history.value[history.value.length - 1]?.timestamp ?? 0)
+                it.timeStamp >
+                (history.value[history.value.length - 1]?.timeStamp ?? 0)
         );
         newM.forEach((it) => {
-            history.value.push(it)
-        })
-        
+            history.value.push(it);
+        });
     });
     function sendMessage() {
-        socketStore.sendMessage({
-            content: {
-                body:messageInputting.value,
-                type:"text"
-            },
-            direct: "up",
-            timestamp: Date.now(),
-        });
+        const newM: MessageItem = {
+            content: { body: messageInputting.value, type: "text" },
+            sender: "User",
+            timeStamp: Date.now(),
+        };
+        chats.value.push(newM);
+        ms.sendMessage("/app/chats", newM);
         messageInputting.value = "";
     }
-    setTimeout(() => {
-        socketStore.openSocket();
-    }, 100);
-    const top = {
-        message: { body: "Welcome to the chat!", type: "text" },
-        sender: "Bot",
-    };
 
-    const messagesHistory = ref<MessageItemDisplay[]>([top]);
-    watch(history.value, (newVal) => {
-        messagesHistory.value = [
-            top,
-            ...newVal.map((message: Message) => ({
-                message: message.content,
-                sender: message.direct === "down" ? "Bot" : "User",
-            })),
-        ];
-    });
+    const top = {
+        content: { body: "你好", type: "text" },
+        sender: "User",
+        timeStamp: Date.now(),
+    };
+    setTimeout(() => {
+        ms.sendMessage("/app/chats", top);
+        chats.value.push(top);
+    }, 1000);
+
     return {
         messageInputting,
         sendMessage,
         history,
-        messagesHistory,
     };
 });

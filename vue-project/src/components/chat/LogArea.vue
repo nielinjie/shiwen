@@ -12,31 +12,17 @@ export interface MessageItemDisplay {
 }
 
 const logStore = useLogStore();
-const { socketMessages } = storeToRefs(logStore);
-const messagesHistory = ref<MessageItemDisplay[]>([]);
-watch(socketMessages.value, (newVal) => {
-    messagesHistory.value = [
-        ...newVal.map((message: LogMessage) => ({
-            message: message.message,
-            level: message.level ?? "info",
-        })),
-    ];
-});
+const { logs } = storeToRefs(logStore);
+
 const chatList = ref<any>(null);
-watch(messagesHistory, () => {
-    nextTick(() => {
-        if (chatList.value != null) {
-            chatList.value.scrollTop = chatList.value?.scrollHeight;
-        }
-    });
-});
+
 </script>
 <template>
     <div>
         <Flex vertical gap="large">
             <TypographyTitle :level="5">Log Here: </TypographyTitle>
             <div class="chatList" ref="chatList">
-                <List size="large" bordered :dataSource="messagesHistory">
+                <List size="large" bordered :dataSource="logs">
                     <template #renderItem="{ item }">
                         <ListItem>
                             <TypographyText>{{ item.message }}</TypographyText>

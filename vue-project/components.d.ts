@@ -19,6 +19,7 @@ declare module 'vue' {
     PromptListItem: typeof import('./src/components/promptLib/PromptListItem.vue')['default']
     PromptSearchingArea: typeof import('./src/components/promptLib/PromptSearchingArea.vue')['default']
     PromptSeedArea: typeof import('./src/components/promptLib/PromptSeedArea.vue')['default']
+    RecordArea: typeof import('./src/components/record/RecordArea.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunningArea: typeof import('./src/components/matrix/RunningArea.vue')['default']

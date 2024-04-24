@@ -55,7 +55,7 @@ class NLU(
 ) {
     fun understand(text: String): UnderStood {
         val prompt = promptForIntents(chatDefine.intentDefs) nn "UserInput:" n text
-        return cacheHolder.getOrPut(prompt) {
+        return cacheHolder.getOrPut_(prompt) {
             runCatching {
                 clientsService.getClient("gpt35").call(prompt).also {
                     logStore.add("chatClient returned" n it)
@@ -77,7 +77,9 @@ class NLU(
         }
     }
 }
-fun CacheHolder<*, *>?.getOrPut(prompt: String, defaultValue: () -> UnderStood): UnderStood {
-    return this?.getOrPut(prompt) { defaultValue() } ?: defaultValue()
+fun <K,V> CacheHolder<K, V>?.getOrPut_(prompt: K, defaultValue: () -> V): UnderStood {
+//    return this?.getOrPut(prompt) { defaultValue() } ?: defaultValue()
+    return (if (this == null) defaultValue() else
+        this.getOrPut(prompt) { defaultValue() }) as UnderStood
 }
 

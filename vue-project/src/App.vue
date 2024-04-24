@@ -43,6 +43,9 @@ router.afterEach((to) => {
                 <MenuItem key="/clients">
                     <RouterLink to="/clients">配置Api和模型客户端</RouterLink>
                 </MenuItem>
+                <MenuItem key="/record">
+                    <RouterLink to="/record">用量</RouterLink>
+                </MenuItem>
                 <MenuItem key="/about">
                     <RouterLink to="/about">关于</RouterLink>
                 </MenuItem>

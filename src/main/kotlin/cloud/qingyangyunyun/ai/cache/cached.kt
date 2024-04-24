@@ -1,5 +1,6 @@
 package cloud.qingyangyunyun.ai.cache
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
@@ -23,6 +24,7 @@ class CacheHolder<K, V> {
 
 @RestController
 class CacheController(
+    @Autowired
     val cacheHolders: Map<String, CacheHolder<*, *>>,
 ) {
     @PostMapping("/api/caches/{name}/reset")

@@ -36,7 +36,7 @@ class STOMPWebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/api/stomp").withSockJS()
+        registry.addEndpoint("/api/stomp").setAllowedOriginPatterns("*").withSockJS() //TODO 这里是否有安全问题？
     }
 }
 

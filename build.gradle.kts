@@ -74,8 +74,15 @@ fun executeCommand(command: String): String {
 task("copyFiles", type = Copy::class) {
     from("./vue-project/dist")
     into("src/main/resources/static")
+
+
     // dependsOn("yarnBuild") 在构建环境没有yarn，所以在本地构建，结果上传到git。
 }
+task("copyDocs", type = Copy::class){
+    from("./README.MD")
+    into("src/main/resources/markdowns")
+}
+
 // task("yarnBuild", type = Exec::class) {
 //     val yarn = executeCommand("which yarn")
 //     workingDir("./vue-project")
@@ -83,9 +90,7 @@ task("copyFiles", type = Copy::class) {
 // }
 
 tasks.processResources{
-    dependsOn("copyFiles")
+    dependsOn("copyFiles","copyDocs")
 }
-tasks.bootJar {
-    dependsOn("copyFiles")
-}
+
 

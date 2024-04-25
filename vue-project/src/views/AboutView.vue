@@ -1,28 +1,45 @@
 <script setup lang="ts">
-import { List, ListItem, Button } from "ant-design-vue";
-import { useMessageStore } from "@/stores/messageStore";
+import {
+    List,
+    ListItem,
+    Button,
+    TypographyTitle,
+    TypographyText,
+} from "ant-design-vue";
 import { storeToRefs } from "pinia";
-const store = useMessageStore();
-const { messages } = storeToRefs(store);
+import { useDocStore } from "@/stores/docStore";
+import { Flex } from "ant-design-vue";
+const store = useDocStore();
+const { doc } = storeToRefs(store);
+import MarkdownIt from "markdown-it";
+const markdown = new MarkdownIt();
 </script>
 
 <template>
-    <List size="large" bordered :dataSource="messages">
-        <template #renderItem="{ item }">
-            <ListItem :item="item">{{ item }}</ListItem>
-        </template>
-    </List>
-    <Button @click="store.sendMessage('/app/hello',{ name: 'foo' })"
-        >Add Message</Button
-    >
+    <div class="r">
+        <FLex gap="large" vertical>
+            <TypographyTitle :level="1">关于试问：</TypographyTitle>
+            <Flex gap="large">
+                <TypographyText
+                    ><a href="https://github.com/nielinjie/shiwen" target="_blank"
+                        >https://github.com/nielinjie/shiwen</a
+                    ></TypographyText
+                >
+                <TypographyText
+                    ><a href="https://gitee.com/nielinjie127/shiwen" target="_blank"
+                        >https://gitee.com/nielinjie127/shiwen</a
+                    ></TypographyText
+                >
+            </Flex>
+            <div v-html="markdown.render(doc)"></div>
+        </FLex>
+    </div>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-    .about {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-    }
+.r {
+    margin-left: 2em;
+    margin-right: 2em;
+    overflow: auto;
 }
 </style>

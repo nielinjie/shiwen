@@ -3,6 +3,7 @@ package cloud.qingyangyunyun.ai.agent
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import org.springframework.stereotype.Component
 
 
 interface IntentsDefine {
@@ -44,3 +45,5 @@ data class SlotDef(
     val examples: List<String>,
     val description: String
 )
+
+

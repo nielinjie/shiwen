@@ -5,6 +5,8 @@ import arrow.core.Option
 import arrow.core.Some
 
 
+
+
 data class IntentHolding(val intent: Option<GotIntent>, val slots: List<GotSlot>) {
     fun satisfied(define: IntentsDefine) = define.validateIntent(this).isRight() //TODO use Either
     fun merge(b: IntentHolding, define: IntentsDefine): IntentHolding {
@@ -41,3 +43,5 @@ data class IntentHolding(val intent: Option<GotIntent>, val slots: List<GotSlot>
 
 data class GotIntent(val name: String)
 data class GotSlot(val name: String, val value: String)
+
+

@@ -1,4 +1,4 @@
-package cloud.qingyangyunyun.website
+package cloud.qingyangyunyun.site
 
 import kotlinx.serialization.Serializable
 import org.springframework.web.bind.annotation.GetMapping

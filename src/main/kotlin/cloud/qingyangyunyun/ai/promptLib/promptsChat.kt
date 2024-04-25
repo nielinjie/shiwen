@@ -38,36 +38,36 @@ class PromptsChatSeed(@Autowired paths: Paths) : Source {
 //    getDoc()
 //}
 
-fun getDoc() {
-    fun getDocument(url: String?): HtmlPage? {
-        var page: HtmlPage? = null
-        try {
-            WebClient().use { webClient ->
-                webClient.options.isCssEnabled = false
-                webClient.options.isJavaScriptEnabled = false
-                page = webClient.getPage(url)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return page
-    }
-
-    val page = getDocument("https://prompts.chat")
-    page!!.let {
-        println("got from ${it.titleText}")
-    }
-    val elements: List<HtmlElement> = page.getByXPath("//h1[@id='prompts']/following-sibling::h2")
-    val prompts = elements.drop(1).mapNotNull {
-        val title = it.textContent
-        val content = it.getFirstByXPath<HtmlElement>("following-sibling::blockquote[1]")?.textContent
-        content?.let {
-            Prompt(it.trim(), title, id(), "prompts-chat", emptyMap())
-        }
-    }
-    JsonData(Paths().promptsChat).save(prompts)
-
-}
+//fun getDoc() {
+//    fun getDocument(url: String?): HtmlPage? {
+//        var page: HtmlPage? = null
+//        try {
+//            WebClient().use { webClient ->
+//                webClient.options.isCssEnabled = false
+//                webClient.options.isJavaScriptEnabled = false
+//                page = webClient.getPage(url)
+//            }
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return page
+//    }
+//
+//    val page = getDocument("https://prompts.chat")
+//    page!!.let {
+//        println("got from ${it.titleText}")
+//    }
+//    val elements: List<HtmlElement> = page.getByXPath("//h1[@id='prompts']/following-sibling::h2")
+//    val prompts = elements.drop(1).mapNotNull {
+//        val title = it.textContent
+//        val content = it.getFirstByXPath<HtmlElement>("following-sibling::blockquote[1]")?.textContent
+//        content?.let {
+//            Prompt(it.trim(), title, id(), "prompts-chat", emptyMap())
+//        }
+//    }
+//    JsonData(Paths().promptsChat).save(prompts)
+//
+//}
 
 
 

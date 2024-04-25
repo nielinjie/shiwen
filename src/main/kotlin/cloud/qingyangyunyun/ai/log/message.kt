@@ -15,41 +15,9 @@ import org.springframework.web.util.HtmlUtils
 import xyz.nietongxue.common.log.Log
 
 
-class HelloMessage(var name: String?) {
 
 
-}
 
-class Greeting(content: String?) {
-    var content: String? = content
-
-
-}
-
-
-@Configuration
-@EnableWebSocketMessageBroker
-class STOMPWebSocketConfig : WebSocketMessageBrokerConfigurer {
-    override fun configureMessageBroker(config: MessageBrokerRegistry) {
-        config.enableSimpleBroker("/topic","/queue")
-        config.setApplicationDestinationPrefixes("/app")
-    }
-
-    override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/api/stomp").setAllowedOriginPatterns("*").withSockJS() //TODO 这里是否有安全问题？
-    }
-}
-
-@Controller
-class GreetingController {
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    @Throws(Exception::class)
-    fun greeting(message: HelloMessage): Greeting {
-        Thread.sleep(1000) // simulated delay
-        return Greeting("Hello, " + HtmlUtils.htmlEscape(message.name!!) + "!")
-    }
-}
 
 @Component
 class LogSender(

@@ -19,6 +19,9 @@ java {
 }
 
 repositories {
+    maven("https://maven.aliyun.com/repository/public/")
+    maven("https://maven.aliyun.com/repository/spring/")
+    mavenLocal()
     mavenCentral()
     maven("https://repo.spring.io/milestone")
     maven("https://repo.spring.io/snapshot")
@@ -77,7 +80,7 @@ task("copyFiles", type = Copy::class) {
 
     // dependsOn("yarnBuild") 在构建环境没有yarn，所以在本地构建，结果上传到git。
 }
-task("copyDocs", type = Copy::class){
+task("copyDocs", type = Copy::class) {
     from("./README.MD")
     into("src/main/resources/markdowns")
 }
@@ -88,8 +91,8 @@ task("copyDocs", type = Copy::class){
 //     commandLine(yarn, "build")
 // }
 
-tasks.processResources{
-    dependsOn("copyFiles","copyDocs")
+tasks.processResources {
+    dependsOn("copyFiles", "copyDocs")
 }
 
 

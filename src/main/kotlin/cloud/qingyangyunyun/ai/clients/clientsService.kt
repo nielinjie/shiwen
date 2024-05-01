@@ -10,7 +10,9 @@ import org.antlr.v4.runtime.misc.MultiMap
 import org.springframework.ai.chat.ChatClient
 import org.springframework.ai.chat.ChatResponse
 import org.springframework.ai.chat.prompt.Prompt
+import org.springframework.ai.embedding.EmbeddingClient
 import org.springframework.ai.ollama.OllamaChatClient
+import org.springframework.ai.ollama.OllamaEmbeddingClient
 import org.springframework.ai.ollama.api.OllamaApi
 import org.springframework.ai.ollama.api.OllamaOptions
 import org.springframework.ai.openai.OpenAiChatClient
@@ -27,7 +29,8 @@ class ClientsService(
     @Autowired(required = false) val recorder: Recorder? = null,
 //    @Autowired(required = false) val cacheHolder: CacheHolder? = null //cache这个功能不应该有用。应该在更高层面cache。需要先高层验证结果的合理性。
 ) {
-    val clients = mutableMapOf<String, ChatClient>()
+    val clients = mutableMapOf<ClientConfig, ChatClient>()
+    val embeddingClients = mutableMapOf<ClientConfig, EmbeddingClient>()
     val apis = mutableMapOf<String, Any>()
     val configData = JsonData(paths.configPath)
     private var configs: ClientConfigs? = null
@@ -40,21 +43,26 @@ class ClientsService(
                 "https://api.xxx.io/",
                 "sk-xxxxxxxxxx"
             ),
-            ApiConfig("ollama", "ollama", "http://localhost:11434", null)
+            ApiConfig("ollama", "ollama", "http://localhost:11434", null),
         ),
         listOf(
             ClientConfig(
-                "openai", "openai", mapOf(
+                "gpt35", "openai", default = true, config = mapOf(
                     "model" to "gpt-3.5-turbo",
                     "temperature" to "0.7"
                 )
             ),
             ClientConfig(
-                "qwen", "ollama", mapOf(
+                "qwen", "ollama", config = mapOf(
                     "model" to "qwen:14b",
                     "temperature" to "0.7"
                 )
-            )
+            ),
+            ClientConfig(
+                "nomic", "ollama", "embedding", default = true, mapOf(
+                    "model" to "nomic-embed-text",
+                )
+            ),
         )
     )
     private val defaultConfigs = ClientConfigs(
@@ -78,11 +86,21 @@ class ClientsService(
     }
 
     fun getClients(): List<String> {
-        return clients.keys.toList()
+        return clients.keys.map { it.name }
     }
 
     fun getClient(client: String): ChatClient {
-        return clients[client]!!
+        return clients.filter { it.key.name == client }.values.firstOrNull() ?: error("no such client found - $client")
+    }
+    fun getDefaultClient(): ChatClient {
+        return clients.filter { it.key.default }.values.firstOrNull() ?: error("no default client found")
+    }
+
+    fun getEmbeddingClient(client: String): EmbeddingClient {
+        return embeddingClients.filter { it.key.name == client }.values.firstOrNull() ?: error("no such embedding client found - $client")
+    }
+    fun getDefaultEmbeddingClient(): EmbeddingClient {
+        return embeddingClients.filter { it.key.default }.values.firstOrNull() ?: error("no default embedding client found")
     }
 
     fun getConfigs(): ClientConfigs {
@@ -109,8 +127,8 @@ class ClientsService(
 
     private final fun fromConfigs(configs: ClientConfigs) {
         clients.clear()
-        configs.clients.forEach { clientConfig ->
-            clients[clientConfig.name] = when (clientConfig.api) {
+        configs.clients.filter { it.type == "chat" }.forEach { clientConfig ->
+            clients[clientConfig] = when (clientConfig.api) {
                 "openai" -> OpenAiChatClient(
                     this.apis["openai"] as OpenAiApi,
                     OpenAiChatOptions.builder().apply {
@@ -135,6 +153,15 @@ class ClientsService(
 //                .let {
 //                if (this.cacheHolder != null) cached(it, this.cacheHolder!!, clientConfig.name) else it
 //            }
+        }
+        configs.clients.filter { it.type == "embedding" }.forEach { clientConfig ->
+            embeddingClients[clientConfig] = when (clientConfig.api) {
+                "ollama" -> OllamaEmbeddingClient(
+                    this.apis["ollama"] as OllamaApi,
+                )
+
+                else -> throw Exception("Unknown client type ${clientConfig.api}")
+            }
         }
     }
 

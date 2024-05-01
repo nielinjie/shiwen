@@ -1,4 +1,4 @@
-package cloud.qingyangyunyun.ai
+package cloud.qingyangyunyun.custom.carInsurance
 
 import cloud.qingyangyunyun.ai.agent.*
 import cloud.qingyangyunyun.ai.cache.CacheHolder
@@ -14,29 +14,29 @@ import java.net.URI
 
 
 @SpringBootApplication(scanBasePackages = ["cloud.qingyangyunyun"])
-class DemoApplication() {
+class DemoApplicationCustom() {
 
 
-    @Bean
-    fun intents(): IntentsDefine {
-        return object : IntentsDefine {
-            override val intentDefs: List<IntentDef>
-                get() = emptyList()
-
-            override fun run(holding: IntentHolding, currentState: State): State {
-                return currentState
-            }
-        }
-    }
-
-    @Bean
-    fun tone(): Tone {
-        return object : Tone {
-            override fun help(): Output {
-                return ("mock help").plain()
-            }
-        }
-    }
+//    @Bean
+//    fun intents(): IntentsDefine {
+//        return object : IntentsDefine {
+//            override val intentDefs: List<IntentDef>
+//                get() = emptyList()
+//
+//            override fun run(holding: IntentHolding, currentState: State): State {
+//                return currentState
+//            }
+//        }
+//    }
+//
+//    @Bean
+//    fun tone(): Tone {
+//        return object : Tone {
+//            override fun help(): Output {
+//                return ("mock help").plain()
+//            }
+//        }
+//    }
 
     @Bean
     fun cacheHolder(): CacheHolder<*, *> {
@@ -66,5 +66,5 @@ class StartupApplicationListener : ApplicationListener<ApplicationReadyEvent> {
 }
 
 fun main(args: Array<String>) {
-    runApplication<DemoApplication>()
+    runApplication<DemoApplicationCustom>()
 }

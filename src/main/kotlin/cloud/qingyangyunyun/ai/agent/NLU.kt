@@ -8,7 +8,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import org.springframework.ai.chat.ChatClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -57,7 +56,7 @@ class NLU(
         val prompt = promptForIntents(chatDefine.intentDefs) nn "UserInput:" n text
         return cacheHolder.getOrPut_(prompt) {
             runCatching {
-                clientsService.getClient("gpt35").call(prompt).also {
+                clientsService.getDefaultClient().call(prompt).also {
                     logStore.add("chatClient returned" n it)
                 }
             }.flatmap {

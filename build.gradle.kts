@@ -46,6 +46,8 @@ dependencies {
     // Replace the following with the starter dependencies of specific modules you wish to use
     implementation("org.springframework.ai:spring-ai-openai")
     implementation("org.springframework.ai:spring-ai-ollama")
+//    implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
+
     implementation("net.sourceforge.htmlunit:htmlunit:2.70.0")
     implementation("net.sf.supercsv:super-csv:2.4.0")
     implementation("io.arrow-kt:arrow-core-jvm:1.2.4")
@@ -67,12 +69,12 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-
-fun executeCommand(command: String): String {
-    val process = ProcessBuilder(*command.split(" ").toTypedArray()).start()
-    val reader = BufferedReader(InputStreamReader(process.inputStream))
-    return reader.readText().trim()
-}
+//
+//fun executeCommand(command: String): String {
+//    val process = ProcessBuilder(*command.split(" ").toTypedArray()).start()
+//    val reader = BufferedReader(InputStreamReader(process.inputStream))
+//    return reader.readText().trim()
+//}
 task("copyFiles", type = Copy::class) {
     from("./vue-project/dist")
     into("src/main/resources/static")

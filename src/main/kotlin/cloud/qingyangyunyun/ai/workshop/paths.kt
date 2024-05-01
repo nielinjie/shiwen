@@ -26,4 +26,6 @@ class Paths(
         get() = File(workshopBasePath, "./prompts.json")
     val promptsChat: File
         get() = File(workshopBasePath, "./seeds/prompts-chat.json")
+    val docbaseConfig: File
+        get() = File(workshopBasePath, "./docbaseConfig.json")
 }

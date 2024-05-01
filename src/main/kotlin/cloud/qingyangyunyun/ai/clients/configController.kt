@@ -51,6 +51,8 @@ data class ConfigsRequest(
 data class ClientConfig(
     val name: String,
     val api: String,
+    val type: String = "chat",
+    val default:Boolean = false,
     val config: Map<String, String>
 )
 

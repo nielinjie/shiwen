@@ -1,6 +1,7 @@
 package cloud.qingyangyunyun.ai.workshop
 
 import cloud.qingyangyunyun.ai.JsonData
+import cloud.qingyangyunyun.ai.Paths
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

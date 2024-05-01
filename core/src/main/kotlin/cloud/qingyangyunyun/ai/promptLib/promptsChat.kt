@@ -1,7 +1,7 @@
 package cloud.qingyangyunyun.ai.promptLib
 
 import cloud.qingyangyunyun.ai.JsonData
-import cloud.qingyangyunyun.ai.workshop.Paths
+import cloud.qingyangyunyun.ai.Paths
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlElement
 import com.gargoylesoftware.htmlunit.html.HtmlPage

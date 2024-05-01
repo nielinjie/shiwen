@@ -1,7 +1,7 @@
 package cloud.qingyangyunyun.ai.promptLib
 
 import cloud.qingyangyunyun.ai.JsonData
-import cloud.qingyangyunyun.ai.workshop.Paths
+import cloud.qingyangyunyun.ai.Paths
 import kotlinx.serialization.Serializable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

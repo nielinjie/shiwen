@@ -1,15 +1,9 @@
 package cloud.qingyangyunyun.ai.clients
 
 import cloud.qingyangyunyun.ai.JsonData
-import cloud.qingyangyunyun.ai.workshop.Paths
+import cloud.qingyangyunyun.ai.Paths
 import cloud.qingyangyunyun.ai.workshop.WorkshopService
-import cloud.qingyangyunyun.ai.workshop.Workspace
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.antlr.v4.runtime.misc.MultiMap
 import org.springframework.ai.chat.ChatClient
-import org.springframework.ai.chat.ChatResponse
-import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.embedding.EmbeddingClient
 import org.springframework.ai.ollama.OllamaChatClient
 import org.springframework.ai.ollama.OllamaEmbeddingClient

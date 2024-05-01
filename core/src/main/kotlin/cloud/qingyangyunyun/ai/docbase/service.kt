@@ -1,6 +1,6 @@
 package cloud.qingyangyunyun.ai.docbase
 
-import cloud.qingyangyunyun.ai.workshop.Paths
+import cloud.qingyangyunyun.ai.Paths
 import cloud.qingyangyunyun.config.JsonDataConfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

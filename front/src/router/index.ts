@@ -23,7 +23,7 @@ const router = createRouter({
         {
             path: "/docbase",
             name: "docbase",
-            component: () => import("@/views/DocbaseView.vue"),
+            component: () => import("@/docbase/DocbaseView.vue"),
         },
         {
             path: "/clients",

@@ -1,6 +1,4 @@
 import { defineStore, storeToRefs } from "pinia";
-import { ref } from "vue";
-import type { Message } from "./socketStore";
 import { useMessageStore } from "./messageStore";
 
 export interface LogMessage {

@@ -23,7 +23,7 @@ interface WithConfig<C> {
 
 abstract class JsonDataConfig<C : Any>(val path: File, val clazz: Class<C>) : WithConfig<C> {
     override var config: C = defaultConfig!!
-    override fun load() {
+    final override fun load() {
         val saveDefault = (defaultConfig != null)
         this.config = JsonData(path).load(defaultConfig!!, clazz, saveDefault)
     }
@@ -31,8 +31,5 @@ abstract class JsonDataConfig<C : Any>(val path: File, val clazz: Class<C>) : Wi
     override fun save() {
         JsonData(path).save(config, clazz)
     }
-    init {
-        load()
-        this.useConfig(this.config)
-    }
+
 }

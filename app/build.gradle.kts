@@ -71,5 +71,4 @@ task("copyFrontFiles", type = Copy::class) {
     into("src/main/resources/static") //TODO get path of app subproject.
 
 
-    // dependsOn("yarnBuild") 在构建环境没有yarn，所以在本地构建，结果上传到git。
 }

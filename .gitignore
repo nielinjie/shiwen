@@ -48,3 +48,4 @@ out/
 
 .DS_Store
 /.shiwen/
+/app/.shiwen/docbaseConfig.json

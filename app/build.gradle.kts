@@ -28,6 +28,8 @@ repositories {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":custom"))
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
@@ -38,24 +40,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
-//
-//    implementation("xyz.nietongxue:common-jvm:1.0-SNAPSHOT")
-//    implementation("cloud.qingyangyunyun:docbaseK-jvm:1.0-SNAPSHOT")
-//    implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
-//    // Replace the following with the starter dependencies of specific modules you wish to use
-//    implementation("org.springframework.ai:spring-ai-openai")
-//    implementation("org.springframework.ai:spring-ai-ollama")
-////    implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
-//
-//    implementation("net.sourceforge.htmlunit:htmlunit:2.70.0")
+
     implementation("net.sf.supercsv:super-csv:2.4.0")
     implementation("io.arrow-kt:arrow-core-jvm:1.2.4")
-//
-//
-//    testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
-//    testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
-//    testImplementation("org.springframework.boot:spring-boot-starter-test")
-//    testImplementation("io.mockk:mockk:1.13.10")
+
 }
 
 tasks.withType<KotlinCompile> {
@@ -67,4 +55,21 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+task("copyDocs", type = Copy::class) {
+    from("../README.MD")
+    into( "src/main/resources/markdowns")
+}
+tasks.named("processResources") {
+    dependsOn("copyDocs")
+    dependsOn("copyFrontFiles")
+}
+
+task("copyFrontFiles", type = Copy::class) {
+    from("../front/dist")
+    into("src/main/resources/static") //TODO get path of app subproject.
+
+
+    // dependsOn("yarnBuild") 在构建环境没有yarn，所以在本地构建，结果上传到git。
 }

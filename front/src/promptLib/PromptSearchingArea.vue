@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Flex, Input } from "ant-design-vue";
 import { ref } from "vue";
-import { usePromptLibStore } from "@/stores/promptLibStore";
+import { usePromptLibStore } from "./promptLibStore";
 import { storeToRefs } from "pinia";
 const inputting = ref("");
 const promptStore = usePromptLibStore();
@@ -29,3 +29,4 @@ function search() {
     width: 50vw;
 }
 </style>
+@/promptLib/promptLibStore

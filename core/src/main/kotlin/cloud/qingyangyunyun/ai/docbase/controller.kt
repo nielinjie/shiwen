@@ -1,9 +1,12 @@
 package cloud.qingyangyunyun.ai.docbase
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import xyz.nietongxue.common.base.Id
+import xyz.nietongxue.docbase.SegmentMethod
+import xyz.nietongxue.docbase.filetypes.FileType
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -11,7 +14,9 @@ import java.util.*
 @RestController
 class DocbaseController(
     @Autowired val service: DocbaseService,
-    @Autowired val indexers: Map<String, Indexer>
+    @Autowired val indexers: Map<String, Indexer>,
+    @Autowired val segmentMethods: Map<String, SegmentMethod>,
+    @Autowired val fileTypes: Map<String, FileType>
 ) {
 
     @GetMapping("/api/docbase/indexers")
@@ -19,10 +24,16 @@ class DocbaseController(
         return indexers.keys.toList() //TODO "Embedding, Tokenizer, etc."
     }
 
-    @GetMapping("/api/docbase/indexedStatus")
-    fun getIndexedStatus(): IndexedStatus {
-        return service.indexedStatus()
+    @GetMapping("/api/docbase/segmentMethods")
+    fun getSegments(): List<String> {
+        return segmentMethods.keys.toList()
     }
+
+    @GetMapping("/api/docbase/fileTypes")
+    fun getFileTypes(): List<String> {
+        return fileTypes.keys.toList()
+    }
+
 
     @GetMapping("/api/docbase/docs")
     fun getDocs(): List<DocInfo> {
@@ -45,6 +56,13 @@ class DocbaseController(
 //        return service.getDoc((id))
     }
 
+    //TODO rest 规范需要遵守，放到queryString？
+    @PostMapping("/api/docbase/docs/ids")
+    fun getDocs(@RequestBody ids: List<String>): List<DocObject> {
+        return ids.map { service.getDoc(it) }
+
+    }
+
     fun decodeUrlSafe(input: String): String {
         return URLDecoder.decode(input, StandardCharsets.UTF_8.toString())
     }
@@ -57,7 +75,11 @@ class DocbaseController(
 
     @GetMapping("/api/docbase/info")
     fun getBaseInfo(): BaseInfoResponse {
-        return BaseInfoResponse("docbase")
+        return BaseInfoResponse(
+            BaseInfo(
+                service.sources(), indexers.keys.toList(), segmentMethods.keys.toList(), fileTypes.keys.toList()
+            )
+        )
     }
 
     @PostMapping("/api/docbase/search")
@@ -68,5 +90,10 @@ class DocbaseController(
 }
 
 @Serializable
-data class BaseInfoResponse(val info: String)
+data class BaseInfo(
+    val sources: List<String>, val indexers: List<String>, val segmentMethods: List<String>, val fileTypes: List<String>
+)
+
+@Serializable
+data class BaseInfoResponse(val info: BaseInfo)
 

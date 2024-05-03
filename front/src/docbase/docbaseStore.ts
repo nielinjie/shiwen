@@ -5,10 +5,15 @@ import { ref, type Ref } from "vue";
 export interface DocInfo {
     id: string;
     name: string;
+    meta: Map<string, string>;
 }
 export interface DocObject extends DocInfo {
     content: string;
     attrs: Record<string, string>;
+}
+export interface IndexerStatus {
+    id: string;
+    indexerNames: string[];
 }
 
 export const useDocbaseStore = defineStore("docbase", () => {
@@ -16,12 +21,14 @@ export const useDocbaseStore = defineStore("docbase", () => {
     const referringDocs: Ref<DocInfo[]> = ref([]);
     const selectedRefDocInfo: Ref<DocInfo | null> = ref(null);
     const derivedDocs: Ref<DocInfo[]> = ref([]);
+    const docDetails: Ref<DocObject[] > = ref([]);
     const docDetail: Ref<DocObject | null> = ref(null);
+
     const condition = ref("");
 
     mande("/api/docbase/info")
         .get()
-        .then((re) => (baseInfo.value = (re as any).info as string));
+        .then((re) => (baseInfo.value = JSON.stringify((re as any).info,null,2) ));
     mande("/api/docbase/referringDocs")
         .get()
         .then((re) => {
@@ -29,7 +36,7 @@ export const useDocbaseStore = defineStore("docbase", () => {
         });
     function selectRefDoc(doc: DocInfo) {
         selectedRefDocInfo.value = doc;
-        condition.value = `来自原始文件 - ${doc.id}`
+        condition.value = `来自原始文件 - ${doc.id}`;
         mande(
             "/api/docbase/derivedDocs/referring/" +
                 btoa(unescape(encodeURIComponent(doc.id)))
@@ -37,12 +44,9 @@ export const useDocbaseStore = defineStore("docbase", () => {
             .get()
             .then((re) => {
                 derivedDocs.value = re as DocInfo[];
+                updateDetails()
             });
-        mande("/api/docbase/docs/" + btoa(unescape(encodeURIComponent(doc.id))))
-            .get()
-            .then((re) => {
-                docDetail.value = re as DocObject;
-            });
+        
     }
     function selectDerDoc(doc: DocInfo) {
         mande("/api/docbase/docs/" + btoa(unescape(encodeURIComponent(doc.id))))
@@ -51,7 +55,16 @@ export const useDocbaseStore = defineStore("docbase", () => {
                 docDetail.value = re as DocObject;
             });
     }
-    
+    function updateDetails(){
+        mande("/api/docbase/docs/ids")
+            .post(derivedDocs.value.map((d) => d.id))
+            .then((re) => {
+                console.log(re);
+                docDetails.value = re as DocObject[];
+                console.log(docDetails.value);
+            });
+    }
+
     return {
         baseInfo,
         referringDocs,
@@ -59,6 +72,8 @@ export const useDocbaseStore = defineStore("docbase", () => {
         selectRefDoc,
         selectDerDoc,
         derivedDocs,
+        docDetails,
         docDetail,
+        updateDetails
     };
 });

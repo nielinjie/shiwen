@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { List, Flex, TypographyTitle, ListItem } from "ant-design-vue";
 
-import { useLogStore, type LogMessage } from "@/stores/logStore";
+import { useLogStore } from "@/stores/logStore";
 import { TypographyText } from "ant-design-vue";
 
 export interface MessageItemDisplay {

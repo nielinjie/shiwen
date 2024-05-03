@@ -19,3 +19,4 @@ const workspaceStore = useWorkspaceStore();
         </Flex>
     </Flex>
 </template>
+@/matrix/workspaceStore../stores/workspaceStore

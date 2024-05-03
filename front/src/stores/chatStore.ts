@@ -15,6 +15,10 @@ export const useChatStore = defineStore("chat", () => {
     const ms = useMessageStore();
     const { chats } = storeToRefs(ms);
     watch(chats.value, (newValue: MessageItem[]) => {
+        // 为啥这里是watch ... .value?  http://blog.51weblove.com/386.html
+        //chats内部数据的修改。
+        //ref([]) 的value是一个proxy(array)
+
         const newM = newValue.filter(
             (it) =>
                 it.timeStamp >

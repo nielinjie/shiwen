@@ -42,3 +42,4 @@ function addToWorkspace() {
     >
 </template>
 <style scoped></style>
+@/matrix/workspaceStore

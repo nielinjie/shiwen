@@ -4,7 +4,7 @@ import { useWorkspaceStore } from "@/stores/workspaceStore";
 import { TypographyText, Row, Flex, Button, Textarea } from "ant-design-vue";
 import { PlusOutlined, MinusOutlined, SaveOutlined } from "@ant-design/icons-vue";
 import { ref } from "vue";
-import { usePromptLibStore } from "@/stores/promptLibStore";
+import { usePromptLibStore } from "@/promptLib/promptLibStore";
 
 const { prompts } = storeToRefs(useWorkspaceStore());
 const promptLib = usePromptLibStore();
@@ -76,3 +76,4 @@ function head10(content:string):string{
     height: 15vh;
 } */
 </style>
+@/matrix/workspaceStore../stores/workspaceStore@/promptLib/promptLibStore

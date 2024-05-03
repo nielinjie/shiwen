@@ -1,7 +1,6 @@
-import { ref, computed } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { mande } from "mande";
-import { useWorkspaceStore, type Task } from "./workspaceStore";
+import { useWorkspaceStore, type Task } from "../stores/workspaceStore";
 import { replaceAt } from "@/util";
 const runApi = mande("/api/run");
 

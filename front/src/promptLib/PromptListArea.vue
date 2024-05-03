@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { usePromptLibStore, type Prompt } from "@/stores/promptLibStore";
+import { usePromptLibStore, type Prompt } from "./promptLibStore";
 import { Flex, TypographyTitle, List } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { computed, type Ref } from "vue";
+import PromptListItem from "./PromptListItem.vue";
 
 export interface PromptObject {
     id: string;
@@ -35,3 +36,4 @@ const promptObjs: Ref<PromptObject[]> = computed(() =>
     width: 70vw;
 }
 </style>
+@/promptLib/promptLibStore

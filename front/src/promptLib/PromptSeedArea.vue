@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { usePromptLibStore } from "@/stores/promptLibStore";
+import { usePromptLibStore } from "./promptLibStore";
 import { TypographyTitle, List, Flex, Checkbox } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-
+import SeedListItem from "./SeedListItem.vue"
 const sourceStore = usePromptLibStore();
 const { storages, seeds } = storeToRefs(sourceStore);
 
@@ -37,3 +37,4 @@ const { storages, seeds } = storeToRefs(sourceStore);
     height: 90vh;
 }
 </style>
+@/promptLib/promptLibStore

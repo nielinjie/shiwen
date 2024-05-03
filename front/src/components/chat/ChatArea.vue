@@ -7,7 +7,7 @@ const chatStore = useChatStore();
 const { history, messageInputting } = storeToRefs(chatStore);
 
 const chatList = ref<any>(null);
-watch(history, () => {
+watch([history,history.value], () => {
     nextTick(() => {
         if (chatList.value != null) {
             chatList.value.scrollTop = chatList.value?.scrollHeight;

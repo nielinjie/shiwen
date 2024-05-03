@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import VariableArea from "@/components/matrix/VariableArea.vue";
-import PromptArea from "@/components/matrix/PromptArea.vue";
-import RunningArea from "@/components/matrix/RunningArea.vue";
-import WorkshopArea from "@/components/WorkshopArea.vue";
+import VariableArea from "./VariableArea.vue";
+import PromptArea from "./PromptArea.vue";
+import RunningArea from "./RunningArea.vue";
+import WorkshopArea from "./WorkshopArea.vue";
 import { useWorkspaceStore } from "@/stores/workspaceStore";
 
 const workspaceStore = useWorkspaceStore();
@@ -60,3 +60,4 @@ td {
     overflow: auto;
 }
 </style>
+@/matrix/workspaceStore../stores/workspaceStore

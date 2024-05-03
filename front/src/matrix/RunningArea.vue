@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { useClientStore } from "@/stores/clientStore";
 import { computed } from "vue";
 import {PlusOutlined} from "@ant-design/icons-vue";
+import RunningItem from "./RunningItem.vue";
 
 const { cells } = storeToRefs(useWorkspaceStore());
 const { clients } = storeToRefs(useClientStore());
@@ -42,3 +43,4 @@ const tasks = computed(() => {
         </Flex>
     </Flex>
 </template>
+@/matrix/workspaceStore../stores/workspaceStore

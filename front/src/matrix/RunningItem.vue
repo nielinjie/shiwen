@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useRunPromptStore } from "@/stores/runPrompt";
+import { useRunPromptStore } from "./runPrompt";
 import { useWorkspaceStore, type WorkCell } from "@/stores/workspaceStore";
 import { Button, Select, SelectOption, Flex, Textarea } from "ant-design-vue";
 import { computed, ref } from "vue";
@@ -101,5 +101,5 @@ const hover = ref(false);
 .content {
     min-width: 5vw;
 }
-
 </style>
+@/matrix/runPrompt@/matrix/workspaceStore../stores/workspaceStore

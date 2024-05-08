@@ -39,7 +39,7 @@ export const useDocbaseStore = defineStore("docbase", () => {
         condition.value = `来自原始文件 - ${doc.id}`;
         mande(
             "/api/docbase/derivedDocs/referring/" +
-                btoa(unescape(encodeURIComponent(doc.id)))
+                btoa(encodeURIComponent((doc.id)))
         )
             .get()
             .then((re) => {
@@ -49,7 +49,7 @@ export const useDocbaseStore = defineStore("docbase", () => {
         
     }
     function selectDerDoc(doc: DocInfo) {
-        mande("/api/docbase/docs/" + btoa(unescape(encodeURIComponent(doc.id))))
+        mande("/api/docbase/docs/" + btoa(encodeURIComponent(doc.id)))
             .get()
             .then((re) => {
                 docDetail.value = re as DocObject;

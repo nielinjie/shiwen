@@ -5,13 +5,9 @@ import cloud.qingyangyunyun.config.JsonDataConfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import xyz.nietongxue.common.base.Attrs
 import xyz.nietongxue.docbase.*
-import xyz.nietongxue.docbase.filetypes.FileType
-import xyz.nietongxue.docbase.filetypes.Txt
 import java.io.File
 
 
@@ -24,36 +20,19 @@ data class Searching(val queryString: String, val indexer: String)
 @Serializable
 data class DocbaseConfig(val filePaths: List<String>)
 
-@Configuration
-class DocbaseConfiguration {
-    @Bean
-    fun indexers(): Map<String, Indexer> {
-        return mapOf("Simple" to SimpleIndexer())
-    }
-
-    @Bean
-    fun segmentMethods(): Map<String, SegmentMethod> {
-        return mapOf("Whole" to SegmentMethod.WholeSegment, "Line" to SegmentMethod.LineSegment)
-    }
-
-    @Bean
-    fun fileTypes(): Map<String, FileType> {
-        return mapOf("Txt" to Txt())
-    }
-}
 
 @Service
 class DocbaseService(
     @Autowired val paths: Paths,
-    @Autowired val indexers: Map<String, Indexer>,
-    @Autowired val segmentMethods: Map<String, SegmentMethod>,
-    @Autowired val fileTypes: Map<String, FileType>
+    @Autowired val indexers: Indexers,
+    @Autowired val segmentMethods: SegmentMethods,
+    @Autowired val fileTypes: FileTypes
 ) :
     JsonDataConfig<DocbaseConfig>(
         paths.docbaseConfig, DocbaseConfig::class.java
     ) {
     lateinit var base: DefaultBase
-    lateinit var fileSystemImporter: FileSystemImporter
+    lateinit var fileSystemImporters: List<FileSystemImporter>
 
     val events = mutableListOf<DocChangeEvent>()
 
@@ -65,30 +44,33 @@ class DocbaseService(
         useConfig(this.config)
     }
 
+    fun indexBase(indexerName: String) {
+        this.indexers.get(indexerName).let {
+            require(it !is AutoIndexer) {
+                "index is auto, do not call it manually"
+            }
+            (it as? BaseIndexer)?.also {
+                it.base = this.base
+                it.indexAll()
+            }
+        }
+    }
+
     override fun useConfig(config: DocbaseConfig) {
-        val docbaseFile = config.filePaths.first().let { File(it) }
-        fileSystemImporter = FileSystemImporter(docbaseFile)
+        val docbaseFiles = config.filePaths.map { File(it) }
+        fileSystemImporters = (docbaseFiles.map { FileSystemImporter(it) })
+        val segments = fileSystemImporters.map {
+            SegmentDerivingTrigger(it, this.segmentMethods.values.toList(), this.fileTypes.values.toList())
+        }
 
         this.base = DefaultBase(
-            DoNothingPersistence, listOf(
-//                object : DocListener {
-//            override fun onChanged(docChangeEvent: DocChangeEvent) {
-//                events.add(docChangeEvent)
-//            }
-//        },
-                fileSystemImporter,
-                SegmentDerivingTrigger(
-                    fileSystemImporter,
-                    this.segmentMethods.values.toList(),
-                    this.fileTypes.values.toList()
-                )
-            ) + indexers.values
+            DoNothingPersistence, fileSystemImporters + segments + indexers.values.filterIsInstance<AutoIndexer>()
         )
 
     }
 
     fun sources(): List<String> {
-        return listOf("fileSystemSource(${this.fileSystemImporter.basePath})")
+        return this.fileSystemImporters.map { "fileSystemSource:${it.basePath}" }
     }
 
     fun listDocs(): List<DocInfo> {
@@ -138,7 +120,11 @@ class DocbaseService(
 
     fun indexedStatus(id: String): IndexedStatus { //TODO 可能有性能问题
         return this.base.get(id).let { doc ->
-            val indexers = this.indexers.filter { it.value.indexed(id) }.map { it.key }
+            val indexers = this.indexers.filter {
+                (it.value as? BaseIndexer)?.let {
+                    it.results.find { it.id == doc.id() }?.result == IndexResult.Success
+                } ?: false
+            }.map { it.key }
             IndexedStatus(id, indexers)
         }
     }

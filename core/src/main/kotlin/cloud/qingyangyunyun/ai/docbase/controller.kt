@@ -1,12 +1,8 @@
 package cloud.qingyangyunyun.ai.docbase
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import xyz.nietongxue.common.base.Id
-import xyz.nietongxue.docbase.SegmentMethod
-import xyz.nietongxue.docbase.filetypes.FileType
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -14,9 +10,10 @@ import java.util.*
 @RestController
 class DocbaseController(
     @Autowired val service: DocbaseService,
-    @Autowired val indexers: Map<String, Indexer>,
-    @Autowired val segmentMethods: Map<String, SegmentMethod>,
-    @Autowired val fileTypes: Map<String, FileType>
+    @Autowired val indexers: Indexers,
+    @Autowired val segmentMethods: SegmentMethods,
+    @Autowired val fileTypes: FileTypes,
+    @Autowired val configService: ConfigService
 ) {
 
     @GetMapping("/api/docbase/indexers")
@@ -87,6 +84,26 @@ class DocbaseController(
         return service.search(searching)
     }
 
+
+    @GetMapping("/api/docbase/config/files")
+    fun getFilesConfig(): List<String> {
+        return configService.filesConfig()
+    }
+
+    @PostMapping("/api/docbase/config/files")
+    fun setFilesConfig(@RequestBody config: List<String>) {
+        configService.filesConfig(config)
+    }
+
+    @GetMapping("/api/docbase/indexers/manual")
+    fun getManualIndexers(): List<String> {
+        return indexers.filter { it.value !is AutoIndexer }.keys.toList()
+    }
+
+    @PostMapping("/api/docbase/manualIndex/{indexName}")
+    fun index(@PathVariable indexName: String) {
+        service.indexBase(indexName)
+    }
 }
 
 @Serializable

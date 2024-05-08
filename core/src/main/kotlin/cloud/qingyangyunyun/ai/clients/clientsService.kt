@@ -4,6 +4,7 @@ import cloud.qingyangyunyun.ai.JsonData
 import cloud.qingyangyunyun.ai.Paths
 import cloud.qingyangyunyun.ai.workshop.WorkshopService
 import org.springframework.ai.chat.ChatClient
+import org.springframework.ai.document.MetadataMode
 import org.springframework.ai.embedding.EmbeddingClient
 import org.springframework.ai.ollama.OllamaChatClient
 import org.springframework.ai.ollama.OllamaEmbeddingClient
@@ -11,7 +12,10 @@ import org.springframework.ai.ollama.api.OllamaApi
 import org.springframework.ai.ollama.api.OllamaOptions
 import org.springframework.ai.openai.OpenAiChatClient
 import org.springframework.ai.openai.OpenAiChatOptions
+import org.springframework.ai.openai.OpenAiEmbeddingClient
+import org.springframework.ai.openai.OpenAiEmbeddingOptions
 import org.springframework.ai.openai.api.OpenAiApi
+import org.springframework.ai.retry.RetryUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -86,15 +90,19 @@ class ClientsService(
     fun getClient(client: String): ChatClient {
         return clients.filter { it.key.name == client }.values.firstOrNull() ?: error("no such client found - $client")
     }
+
     fun getDefaultClient(): ChatClient {
         return clients.filter { it.key.default }.values.firstOrNull() ?: error("no default client found")
     }
 
     fun getEmbeddingClient(client: String): EmbeddingClient {
-        return embeddingClients.filter { it.key.name == client }.values.firstOrNull() ?: error("no such embedding client found - $client")
+        return embeddingClients.filter { it.key.name == client }.values.firstOrNull()
+            ?: error("no such embedding client found - $client")
     }
+
     fun getDefaultEmbeddingClient(): EmbeddingClient {
-        return embeddingClients.filter { it.key.default }.values.firstOrNull() ?: error("no default embedding client found")
+        return embeddingClients.filter { it.key.default }.values.firstOrNull()
+            ?: error("no default embedding client found")
     }
 
     fun getConfigs(): ClientConfigs {
@@ -151,7 +159,18 @@ class ClientsService(
         configs.clients.filter { it.type == "embedding" }.forEach { clientConfig ->
             embeddingClients[clientConfig] = when (clientConfig.api) {
                 "ollama" -> OllamaEmbeddingClient(
-                    this.apis["ollama"] as OllamaApi,
+                    this.apis["ollama"] as OllamaApi
+                ).withDefaultOptions(
+                    OllamaOptions().apply {
+                        clientConfig.config["model"]?.let { withModel(it) }
+                    }
+                )
+
+                "openai" -> OpenAiEmbeddingClient(
+                    this.apis["openai"] as OpenAiApi, MetadataMode.EMBED,
+                    OpenAiEmbeddingOptions.builder().apply {
+                        clientConfig.config["model"]?.let { withModel(it) }
+                    }.build(), RetryUtils.DEFAULT_RETRY_TEMPLATE
                 )
 
                 else -> throw Exception("Unknown client type ${clientConfig.api}")

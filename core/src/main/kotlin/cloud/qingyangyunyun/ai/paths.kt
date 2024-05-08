@@ -10,6 +10,7 @@ class Paths(
     val fileBase: String?
 ) {
 
+
     val workshopBasePath: File
         get() =
             File(
@@ -28,4 +29,6 @@ class Paths(
         get() = File(workshopBasePath, "./seeds/prompts-chat.json")
     val docbaseConfig: File
         get() = File(workshopBasePath, "./docbaseConfig.json")
+    val vectorStoreDataPath: File
+        get() = File(workshopBasePath, "./vectorStore/simpleVectorStore.json")
 }

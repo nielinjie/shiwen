@@ -51,7 +51,8 @@ abstract class BaseIndexer : Indexer {
 
 abstract class AutoIndexer : BaseIndexer(), DocListener, BaseListener {
     override fun onOpen(base: Base) {
-        require(this.base == base)
+        this.base = base as DefaultBase
+//        require(this.base == base)
         indexAll()
     }
 

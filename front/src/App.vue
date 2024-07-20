@@ -40,6 +40,9 @@ router.afterEach((to) => {
                 <MenuItem key="/docbase">
                     <RouterLink to="/docbase"> 文档知识管理</RouterLink>
                 </MenuItem>
+                <MenuItem key="/functions">
+                    <RouterLink to="/functions">FunctionCalling</RouterLink>
+                </MenuItem>
                 <MenuItem key="/clients">
                     <RouterLink to="/clients">配置Api和模型客户端</RouterLink>
                 </MenuItem>

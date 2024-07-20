@@ -26,6 +26,11 @@ const router = createRouter({
             component: () => import("@/docbase/DocbaseView.vue"),
         },
         {
+            path: "/functions",
+            name: "functions",
+            component: () => import("@/functions/FunctionsView.vue"),
+        },
+        {
             path: "/clients",
             name: "clients",
             component: () => import("@/views/ClientsView.vue"),

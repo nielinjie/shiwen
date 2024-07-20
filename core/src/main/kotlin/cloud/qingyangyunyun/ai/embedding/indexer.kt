@@ -12,6 +12,12 @@ import xyz.nietongxue.docbase.Doc
 @Component
 class EmbeddingIndexer(@Autowired val vectorStore: VectorStore) : BaseIndexer() {
 
+    //TODO 用hash作为index document的id。doc的id放在attrs里面。
+    //这样可以同时判断版本的问题。
+    //PS 是否可以整个docbase都以hash作为id？貌似之前考虑过是不可以的。
+    init{
+        vectorStore.load()
+    }
     fun Doc.document(): Document? {
         if (this.content.isEmpty()) return null
         return Document(this.id(), this.content, this.attrs)
@@ -22,16 +28,18 @@ class EmbeddingIndexer(@Autowired val vectorStore: VectorStore) : BaseIndexer() 
     }
 
     override fun index(doc: Doc): IndexResult {
-        //TODO check index existed.
+        if (vectorStore.existed(doc.id()))
+            return IndexResult.NotNeed
         vectorStore.accept(listOfNotNull(doc.document()))
         return IndexResult.Success
     }
 
     override fun removeIndex(docId: Id) {
         vectorStore.delete(listOf(docId))
-
     }
+
     override fun flush() {
+
         vectorStore.save()
     }
 

@@ -25,7 +25,6 @@ watch(
             detail: doc,
             checked: false,
         }));
-        console.log(docWithSelected.value);
     },
     { immediate: true }
 );

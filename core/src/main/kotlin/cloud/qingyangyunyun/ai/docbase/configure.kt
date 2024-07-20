@@ -34,7 +34,7 @@ class DocbaseConfiguration {
     @Bean
     fun segmentMethods(): SegmentMethods {
         return SegmentMethods(mapOf(
-            "Whole" to SegmentMethod.WholeSegment,
+//            "Whole" to SegmentMethod.WholeSegment,
             "Paragraph" to SegmentMethod.ParagraphSegment,
             "Line" to SegmentMethod.LineSegment))
     }

@@ -13,7 +13,12 @@ export const useRunPromptStore = defineStore("runPrompt", () => {
         }
     }
 
-    async function runIt(pIndex:number,vIndex:number,runningIndex: number, client: string) {
+    async function runIt(
+        pIndex: number,
+        vIndex: number,
+        runningIndex: number,
+        client: string
+    ) {
         const request = {
             input: variables.value[vIndex],
             prompt: prompts.value[pIndex],
